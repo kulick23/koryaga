@@ -29,7 +29,12 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">{CONTACT_INFO.phone.label}</p>
-                  <p className="text-lg font-semibold text-foreground">{CONTACT_INFO.phone.value}</p>
+                  <a
+                    href={`tel:${CONTACT_INFO.phone.value.replace(/\D/g, "")}`}
+                    className="text-lg font-semibold text-foreground transition-colors hover:text-primary"
+                  >
+                    {CONTACT_INFO.phone.value}
+                  </a>
                 </div>
               </div>
 
@@ -39,7 +44,14 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">{CONTACT_INFO.instagram.label}</p>
-                  <p className="text-lg font-semibold text-foreground">{CONTACT_INFO.instagram.value}</p>
+                  <a
+                    href={`https://instagram.com/${CONTACT_INFO.instagram.value.replace(/^@/, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-lg font-semibold text-foreground transition-colors hover:text-primary"
+                  >
+                    {CONTACT_INFO.instagram.value}
+                  </a>
                 </div>
               </div>
 
