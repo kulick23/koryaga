@@ -16,6 +16,7 @@ type CatalogState = {
   products: Product[]
   activeCategory: CatalogCategory
   likedIds: number[]
+  cart: Record<number, number>
   status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
 }
@@ -25,6 +26,7 @@ const initialState: CatalogState = {
   products: [],
   activeCategory: "Все",
   likedIds: [],
+  cart: {},
   status: "idle",
   error: null,
 }
@@ -60,6 +62,24 @@ const catalogSlice = createSlice({
       }
       state.likedIds.push(id)
     },
+    addToCart(state, action: PayloadAction<number>) {
+      const id = action.payload
+      state.cart[id] = (state.cart[id] ?? 0) + 1
+    },
+    removeFromCart(state, action: PayloadAction<number>) {
+      const id = action.payload
+      if (!state.cart[id]) return
+      state.cart[id] -= 1
+      if (state.cart[id] <= 0) {
+        delete state.cart[id]
+      }
+    },
+    clearFromCart(state, action: PayloadAction<number>) {
+      delete state.cart[action.payload]
+    },
+    clearCart(state) {
+      state.cart = {}
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -82,5 +102,12 @@ const catalogSlice = createSlice({
   },
 })
 
-export const { setActiveCategory, toggleLike } = catalogSlice.actions
+export const {
+  setActiveCategory,
+  toggleLike,
+  addToCart,
+  removeFromCart,
+  clearFromCart,
+  clearCart,
+} = catalogSlice.actions
 export default catalogSlice.reducer

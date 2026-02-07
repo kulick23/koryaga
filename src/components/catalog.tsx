@@ -1,7 +1,7 @@
 import { ShoppingBag, Heart } from "lucide-react"
 
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
-import { setActiveCategory, toggleLike } from "@/store/slices/catalogSlice"
+import { addToCart, setActiveCategory, toggleLike } from "@/store/slices/catalogSlice"
 export function Catalog() {
   const dispatch = useAppDispatch()
   const { categories, products, activeCategory, likedIds } = useAppSelector((state) => state.catalog)
@@ -93,6 +93,7 @@ export function Catalog() {
                   </span>
                   <button
                     type="button"
+                    onClick={() => dispatch(addToCart(product.id))}
                     className="flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
                   >
                     <ShoppingBag className="h-4 w-4" />
