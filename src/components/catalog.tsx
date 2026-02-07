@@ -1,12 +1,10 @@
 import { ShoppingBag, Heart } from "lucide-react"
 
-import { categories, products } from "@/data/catalog"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
 import { setActiveCategory, toggleLike } from "@/store/slices/catalogSlice"
 export function Catalog() {
   const dispatch = useAppDispatch()
-  const activeCategory = useAppSelector((state) => state.catalog.activeCategory)
-  const likedItems = useAppSelector((state) => state.catalog.likedIds)
+  const { categories, products, activeCategory, likedIds } = useAppSelector((state) => state.catalog)
 
   const filteredProducts =
     activeCategory === "Все"
@@ -68,15 +66,15 @@ export function Catalog() {
                   type="button"
                   onClick={() => dispatch(toggleLike(product.id))}
                   className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full backdrop-blur-sm transition-all ${
-                    likedItems.includes(product.id)
+                    likedIds.includes(product.id)
                       ? "bg-primary text-primary-foreground"
                       : "bg-card/60 text-foreground hover:bg-primary hover:text-primary-foreground"
                   }`}
-                  aria-label={likedItems.includes(product.id) ? "Убрать из избранного" : "Добавить в избранное"}
+                  aria-label={likedIds.includes(product.id) ? "Убрать из избранного" : "Добавить в избранное"}
                 >
                   <Heart
                     className="h-5 w-5"
-                    fill={likedItems.includes(product.id) ? "currentColor" : "none"}
+                    fill={likedIds.includes(product.id) ? "currentColor" : "none"}
                   />
                 </button>
               </div>

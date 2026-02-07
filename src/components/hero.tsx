@@ -1,11 +1,13 @@
 import { ArrowDown } from "lucide-react"
 
+import heroImage from "@/assets/img/hero-bouquet.jpg"
+
 export function Hero() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden pt-20">
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/hero-bouquet.jpg"
+          src={heroImage}
           alt="Роскошный букет цветов"
           className="absolute inset-0 h-full w-full object-cover opacity-40"
           loading="eager"

@@ -1,5 +1,7 @@
 import { Leaf, Clock, Award, Truck } from "lucide-react"
 
+import workshopImage from "@/assets/img/florist-workshop.jpg"
+
 const features = [
   {
     icon: Leaf,
@@ -31,7 +33,7 @@ export function About() {
           <div className="relative">
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl">
               <img
-                src="/images/florist-workshop.jpg"
+                src={workshopImage}
                 alt="Мастерская флориста"
                 className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"

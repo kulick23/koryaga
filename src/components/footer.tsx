@@ -3,11 +3,8 @@ export function Footer() {
     <footer className="border-t border-border px-6 py-12">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-              <span className="text-lg font-bold text-primary-foreground">B</span>
-            </div>
-            <span className="text-xl font-bold tracking-tight text-foreground">BLOOM</span>
+          <div className="flex items-center gap-3">
+            <span className="text-xl font-bold tracking-tight text-foreground">KORYAGA</span>
           </div>
 
           <nav className="flex flex-wrap items-center justify-center gap-6">
@@ -64,7 +61,7 @@ export function Footer() {
 
         <div className="mt-10 border-t border-border pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            {"2026 BLOOM. Все права защищены."}
+            {"2026 KORYAGA. Все права защищены."}
           </p>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Menu, X, ShoppingBag } from "lucide-react"
 
+
 const navLinks = [
   { label: "Каталог", href: "#catalog" },
   { label: "О нас", href: "#about" },
@@ -16,11 +17,8 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#top" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-            <span className="text-lg font-bold text-primary-foreground">B</span>
-          </div>
-          <span className="text-xl font-bold tracking-tight text-foreground">BLOOM</span>
+        <a href="#top" className="flex items-center gap-3">
+          <span className="text-2xl font-bold tracking-tight text-foreground">KORYAGA</span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
