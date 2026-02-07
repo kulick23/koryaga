@@ -110,24 +110,13 @@ export const ru = {
     info: {
       phoneLabel: "Телефон",
       phoneValue: "+375 (25) 939-85-15",
-      addressLabel: "Адрес",
-      addressValue: "ул. Цветочная, 42",
+      instagramLabel: "Instagram",
+      instagramValue: "@koryaga.by",
       hoursLabel: "Часы работы",
       hoursValue: "Ежедневно 8:00 — 22:00",
     },
     form: {
-      title: "Оставить заявку",
-      description: "Мы свяжемся с вами в ближайшее время",
-      submitIdle: "Отправить заявку",
-      submitSuccess: "Заявка отправлена!",
-      fields: {
-        name: "Имя",
-        namePlaceholder: "Ваше имя",
-        phone: "Телефон",
-        phonePlaceholder: "+7 (___) ___-__-__",
-        message: "Сообщение",
-        messagePlaceholder: "Расскажите, что вы хотели бы заказать...",
-      },
+      removed: true,
     },
   },
   catalog: {
@@ -151,11 +140,6 @@ export const ru = {
   },
   footer: {
     copyright: "2026 KORYAGA. Все права защищены.",
-    socials: {
-      telegram: "Telegram",
-      whatsapp: "WhatsApp",
-      instagram: "Instagram",
-    },
   },
   marquee: [
     "Розы",
