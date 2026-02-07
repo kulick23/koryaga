@@ -126,6 +126,10 @@ export const ru = {
     favoriteAdd: "Добавить в избранное",
     favoriteRemove: "Убрать из избранного",
     allCategory: "Все",
+    pagination: {
+      previous: "Назад",
+      next: "Вперёд",
+    },
   },
   cart: {
     buttonAria: "Корзина",

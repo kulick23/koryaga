@@ -1,16 +1,30 @@
-import { ShoppingBag } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react"
 
-import { CATALOG_ALL_CATEGORY, CATALOG_CONTENT } from "@/constants/catalog"
+import { CATALOG_ALL_CATEGORY, CATALOG_CONTENT, CATALOG_ITEMS_PER_PAGE } from "@/constants/catalog"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
 import { addToCart, setActiveCategory } from "@/store/slices/catalogSlice"
 export function Catalog() {
   const dispatch = useAppDispatch()
   const { categories, products, activeCategory } = useAppSelector((state) => state.catalog)
+  const [page, setPage] = useState(1)
 
-  const filteredProducts =
-    activeCategory === CATALOG_ALL_CATEGORY
+  const filteredProducts = useMemo(() => {
+    return activeCategory === CATALOG_ALL_CATEGORY
       ? products
       : products.filter((p) => p.category === activeCategory)
+  }, [activeCategory, products])
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / CATALOG_ITEMS_PER_PAGE))
+  const currentPage = Math.min(page, totalPages)
+  const pagedProducts = filteredProducts.slice(
+    (currentPage - 1) * CATALOG_ITEMS_PER_PAGE,
+    currentPage * CATALOG_ITEMS_PER_PAGE
+  )
+
+  useEffect(() => {
+    setPage(1)
+  }, [activeCategory])
 
   return (
     <section id="catalog" className="px-6 py-24">
@@ -43,7 +57,7 @@ export function Catalog() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProducts.map((product) => (
+          {pagedProducts.map((product) => (
             <div
               key={product.id}
               className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-[0_0_40px_rgba(200,255,0,0.05)]"
@@ -111,6 +125,51 @@ export function Catalog() {
             </div>
           ))}
         </div>
+
+        {totalPages > 1 && (
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              {CATALOG_CONTENT.pagination.previous}
+            </button>
+
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }, (_, index) => {
+                const pageNumber = index + 1
+                const isActive = pageNumber === currentPage
+                return (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    onClick={() => setPage(pageNumber)}
+                    className={`h-10 min-w-[2.5rem] rounded-full px-3 text-sm font-semibold transition-all ${
+                      isActive
+                        ? "bg-primary text-primary-foreground shadow-[0_0_20px_rgba(200,255,0,0.2)]"
+                        : "bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80"
+                    }`}
+                  >
+                    {pageNumber}
+                  </button>
+                )
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {CATALOG_CONTENT.pagination.next}
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   )
