@@ -1,11 +1,11 @@
-import { ShoppingBag, Heart } from "lucide-react"
+import { ShoppingBag } from "lucide-react"
 
 import { CATALOG_ALL_CATEGORY, CATALOG_CONTENT } from "@/constants/catalog"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
-import { addToCart, setActiveCategory, toggleLike } from "@/store/slices/catalogSlice"
+import { addToCart, setActiveCategory } from "@/store/slices/catalogSlice"
 export function Catalog() {
   const dispatch = useAppDispatch()
-  const { categories, products, activeCategory, likedIds } = useAppSelector((state) => state.catalog)
+  const { categories, products, activeCategory } = useAppSelector((state) => state.catalog)
 
   const filteredProducts =
     activeCategory === CATALOG_ALL_CATEGORY
@@ -63,6 +63,7 @@ export function Catalog() {
                   </span>
                 )}
 
+                {/* Like functionality is temporarily disabled; keep for future re-enable.
                 <button
                   type="button"
                   onClick={() => dispatch(toggleLike(product.id))}
@@ -82,6 +83,7 @@ export function Catalog() {
                     fill={likedIds.includes(product.id) ? "currentColor" : "none"}
                   />
                 </button>
+                */}
               </div>
 
               <div className="relative p-5">
