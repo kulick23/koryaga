@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
 export type CatalogCategory = "Все" | "Букеты" | "Композиции" | "Свадебные" | "Экзотика"
 
@@ -16,63 +16,34 @@ type CatalogState = {
   products: Product[]
   activeCategory: CatalogCategory
   likedIds: number[]
+  status: "idle" | "loading" | "succeeded" | "failed"
+  error: string | null
 }
 
 const initialState: CatalogState = {
-  categories: ["Все", "Букеты", "Композиции", "Свадебные", "Экзотика"],
-  products: [
-    {
-      id: 1,
-      name: "Розовая нежность",
-      category: "Букеты",
-      price: 4500,
-      image: "/images/bouquet-1.jpg",
-      badge: "Хит",
-    },
-    {
-      id: 2,
-      name: "Красная страсть",
-      category: "Букеты",
-      price: 5200,
-      image: "/images/bouquet-2.jpg",
-      badge: null,
-    },
-    {
-      id: 3,
-      name: "Белая элегантность",
-      category: "Композиции",
-      price: 7800,
-      image: "/images/bouquet-3.jpg",
-      badge: "Новинка",
-    },
-    {
-      id: 4,
-      name: "Свадебная мечта",
-      category: "Свадебные",
-      price: 8500,
-      image: "/images/bouquet-4.jpg",
-      badge: null,
-    },
-    {
-      id: 5,
-      name: "Солнечный день",
-      category: "Букеты",
-      price: 3900,
-      image: "/images/bouquet-5.jpg",
-      badge: "Скидка",
-    },
-    {
-      id: 6,
-      name: "Тропический рай",
-      category: "Экзотика",
-      price: 9200,
-      image: "/images/bouquet-6.jpg",
-      badge: "Премиум",
-    },
-  ],
+  categories: [],
+  products: [],
   activeCategory: "Все",
   likedIds: [],
+  status: "idle",
+  error: null,
 }
+
+type CatalogPayload = {
+  categories: CatalogCategory[]
+  products: Product[]
+}
+
+export const fetchCatalog = createAsyncThunk<CatalogPayload>(
+  "catalog/fetchCatalog",
+  async () => {
+    const response = await fetch("/data/catalog.json")
+    if (!response.ok) {
+      throw new Error("Не удалось загрузить каталог")
+    }
+    return (await response.json()) as CatalogPayload
+  }
+)
 
 const catalogSlice = createSlice({
   name: "catalog",
@@ -89,6 +60,25 @@ const catalogSlice = createSlice({
       }
       state.likedIds.push(id)
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCatalog.pending, (state) => {
+        state.status = "loading"
+        state.error = null
+      })
+      .addCase(fetchCatalog.fulfilled, (state, action) => {
+        state.status = "succeeded"
+        state.categories = action.payload.categories
+        state.products = action.payload.products
+        if (!state.categories.includes(state.activeCategory)) {
+          state.activeCategory = "Все"
+        }
+      })
+      .addCase(fetchCatalog.rejected, (state, action) => {
+        state.status = "failed"
+        state.error = action.error.message ?? "Ошибка загрузки каталога"
+      })
   },
 })
 
