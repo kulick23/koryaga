@@ -90,7 +90,7 @@ export function Header() {
             </button>
 
             {cartOpen && (
-              <div className="absolute right-0 mt-3 w-[22rem] rounded-2xl border border-border bg-card p-4 shadow-2xl">
+              <div className="fixed left-4 right-4 top-20 z-50 max-h-[80vh] overflow-auto rounded-2xl border border-border bg-card p-4 shadow-2xl sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-3 sm:w-[22rem] sm:max-h-none sm:overflow-visible">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-foreground">
                     {checkoutOpen ? CART_LABELS.checkoutTitle : CART_LABELS.title}
