@@ -1,29 +1,6 @@
-import { Leaf, Clock, Award, Truck } from "lucide-react"
-
 import workshopImage from "@/assets/img/florist-workshop.jpg"
-
-const features = [
-  {
-    icon: Leaf,
-    title: "Свежие цветы",
-    description: "Только свежие цветы напрямую от лучших поставщиков",
-  },
-  {
-    icon: Clock,
-    title: "Быстрая доставка",
-    description: "Доставка по городу в течение 2 часов с момента заказа",
-  },
-  {
-    icon: Award,
-    title: "Авторские композиции",
-    description: "Каждый букет создаётся профессиональным флористом",
-  },
-  {
-    icon: Truck,
-    title: "Бережная упаковка",
-    description: "Специальная упаковка сохраняет свежесть при доставке",
-  },
-]
+import { ABOUT_CONTENT, ABOUT_FEATURES } from "@/constants/about"
+import { IMAGE_ALTS } from "@/constants/media"
 
 export function About() {
   return (
@@ -34,39 +11,43 @@ export function About() {
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl">
               <img
                 src={workshopImage}
-                alt="Мастерская флориста"
+                alt={IMAGE_ALTS.workshop}
                 className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
               />
             </div>
             <div className="absolute -bottom-6 -right-6 rounded-2xl border border-border bg-card p-6 shadow-2xl md:p-8">
               <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary">
-                  <span className="text-2xl font-bold text-primary-foreground">7</span>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Лет</p>
-                  <p className="text-lg font-bold text-foreground">Опыта работы</p>
-                </div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary">
+                <span className="text-2xl font-bold text-primary-foreground">
+                  {ABOUT_CONTENT.experience.value}
+                </span>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  {ABOUT_CONTENT.experience.label}
+                </p>
+                <p className="text-lg font-bold text-foreground">
+                  {ABOUT_CONTENT.experience.title}
+                </p>
               </div>
             </div>
           </div>
+        </div>
 
-          <div>
-            <span className="text-sm font-semibold uppercase tracking-widest text-primary">
-              О нас
-            </span>
-            <h2 className="mt-2 font-serif text-4xl font-bold text-foreground md:text-5xl">
-              Цветы с любовью и заботой
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              BLOOM — это не просто цветочный магазин. Мы создаём уникальные авторские
-              композиции, которые передают эмоции и делают каждый момент незабываемым.
-              Наши флористы вкладывают душу в каждый букет.
-            </p>
+        <div>
+          <span className="text-sm font-semibold uppercase tracking-widest text-primary">
+            {ABOUT_CONTENT.label}
+          </span>
+          <h2 className="mt-2 font-serif text-4xl font-bold text-foreground md:text-5xl">
+            {ABOUT_CONTENT.title}
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            {ABOUT_CONTENT.description}
+          </p>
 
             <div className="mt-10 grid gap-6 sm:grid-cols-2">
-              {features.map((feature) => (
+              {ABOUT_FEATURES.map((feature) => (
                 <div
                   key={feature.title}
                   className="group flex gap-4 rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-[0_0_30px_rgba(200,255,0,0.05)]"

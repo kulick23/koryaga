@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
+import { CATALOG_ALL_CATEGORY } from "@/constants/catalog"
+
 export type CatalogCategory = "Все" | "Букеты" | "Композиции" | "Свадебные" | "Экзотика"
 
 export type Product = {
@@ -24,7 +26,7 @@ type CatalogState = {
 const initialState: CatalogState = {
   categories: [],
   products: [],
-  activeCategory: "Все",
+  activeCategory: CATALOG_ALL_CATEGORY,
   likedIds: [],
   cart: {},
   status: "idle",
@@ -92,7 +94,7 @@ const catalogSlice = createSlice({
         state.categories = action.payload.categories
         state.products = action.payload.products
         if (!state.categories.includes(state.activeCategory)) {
-          state.activeCategory = "Все"
+          state.activeCategory = CATALOG_ALL_CATEGORY
         }
       })
       .addCase(fetchCatalog.rejected, (state, action) => {

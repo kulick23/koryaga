@@ -1,5 +1,6 @@
 import { ShoppingBag, Heart } from "lucide-react"
 
+import { CATALOG_ALL_CATEGORY, CATALOG_CONTENT } from "@/constants/catalog"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
 import { addToCart, setActiveCategory, toggleLike } from "@/store/slices/catalogSlice"
 export function Catalog() {
@@ -7,7 +8,7 @@ export function Catalog() {
   const { categories, products, activeCategory, likedIds } = useAppSelector((state) => state.catalog)
 
   const filteredProducts =
-    activeCategory === "Все"
+    activeCategory === CATALOG_ALL_CATEGORY
       ? products
       : products.filter((p) => p.category === activeCategory)
 
@@ -17,10 +18,10 @@ export function Catalog() {
         <div className="mb-12 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <span className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Каталог
+              {CATALOG_CONTENT.label}
             </span>
             <h2 className="mt-2 font-serif text-4xl font-bold text-foreground md:text-5xl">
-              Наши букеты
+              {CATALOG_CONTENT.title}
             </h2>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -70,7 +71,11 @@ export function Catalog() {
                       ? "bg-primary text-primary-foreground"
                       : "bg-card/60 text-foreground hover:bg-primary hover:text-primary-foreground"
                   }`}
-                  aria-label={likedIds.includes(product.id) ? "Убрать из избранного" : "Добавить в избранное"}
+                  aria-label={
+                    likedIds.includes(product.id)
+                      ? CATALOG_CONTENT.favoriteRemoveAria
+                      : CATALOG_CONTENT.favoriteAddAria
+                  }
                 >
                   <Heart
                     className="h-5 w-5"
@@ -97,7 +102,7 @@ export function Catalog() {
                     className="flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
                   >
                     <ShoppingBag className="h-4 w-4" />
-                    В корзину
+                    {CATALOG_CONTENT.addToCart}
                   </button>
                 </div>
               </div>

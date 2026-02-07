@@ -1,16 +1,12 @@
 import { useMemo, useState } from "react"
 import { Menu, Minus, Plus, ShoppingBag, X } from "lucide-react"
 
+import { BRAND_NAME } from "@/constants/brand"
+import { CART_LABELS } from "@/constants/cart"
+import { NAV_LINKS, NAV_MENU_LABELS } from "@/constants/navigation"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
 import { addToCart, clearCart, removeFromCart } from "@/store/slices/catalogSlice"
 
-
-const navLinks = [
-  { label: "Каталог", href: "#catalog" },
-  { label: "О нас", href: "#about" },
-  { label: "Доставка", href: "#delivery" },
-  { label: "Контакты", href: "#contact" },
-]
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -39,11 +35,11 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <a href="#top" className="flex items-center gap-3">
-          <span className="text-2xl font-bold tracking-tight text-foreground">KORYAGA</span>
+          <span className="text-2xl font-bold tracking-tight text-foreground">{BRAND_NAME}</span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -59,7 +55,7 @@ export function Header() {
             <button
             type="button"
             className="relative flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-            aria-label="Корзина"
+            aria-label={CART_LABELS.buttonAria}
             onClick={() => setCartOpen((prev) => !prev)}
           >
             <ShoppingBag className="h-5 w-5" />
@@ -73,12 +69,12 @@ export function Header() {
             {cartOpen && (
               <div className="absolute right-0 mt-3 w-[22rem] rounded-2xl border border-border bg-card p-4 shadow-2xl">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-foreground">Корзина</span>
+                  <span className="text-sm font-semibold text-foreground">{CART_LABELS.title}</span>
                   <button
                     type="button"
                     className="rounded-full p-1 text-muted-foreground hover:text-foreground"
                     onClick={() => setCartOpen(false)}
-                    aria-label="Закрыть корзину"
+                    aria-label={CART_LABELS.closeAria}
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -86,7 +82,7 @@ export function Header() {
 
                 {cartItems.length === 0 ? (
                   <p className="mt-4 text-sm text-muted-foreground">
-                    Корзина пуста. Добавьте товары из каталога.
+                    {CART_LABELS.empty}
                   </p>
                 ) : (
                   <>
@@ -119,7 +115,7 @@ export function Header() {
                                   type="button"
                                   className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
                                   onClick={() => dispatch(removeFromCart(product.id))}
-                                  aria-label="Уменьшить количество"
+                                  aria-label={CART_LABELS.decreaseAria}
                                 >
                                   <Minus className="h-3.5 w-3.5" />
                                 </button>
@@ -130,7 +126,7 @@ export function Header() {
                                   type="button"
                                   className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
                                   onClick={() => dispatch(addToCart(product.id))}
-                                  aria-label="Увеличить количество"
+                                  aria-label={CART_LABELS.increaseAria}
                                 >
                                   <Plus className="h-3.5 w-3.5" />
                                 </button>
@@ -145,7 +141,7 @@ export function Header() {
                     </div>
 
                     <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
-                      <span className="text-sm text-muted-foreground">Итого</span>
+                      <span className="text-sm text-muted-foreground">{CART_LABELS.total}</span>
                       <span className="text-lg font-bold text-foreground">
                         {cartTotal.toLocaleString("ru-RU")} ₽
                       </span>
@@ -157,13 +153,13 @@ export function Header() {
                         className="flex-1 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground hover:border-primary hover:text-primary"
                         onClick={() => dispatch(clearCart())}
                       >
-                        Очистить
+                        {CART_LABELS.clear}
                       </button>
                       <button
                         type="button"
                         className="flex-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
                       >
-                        Оформить
+                        {CART_LABELS.checkout}
                       </button>
                     </div>
                   </>
@@ -176,7 +172,7 @@ export function Header() {
             type="button"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-foreground transition-colors hover:bg-primary hover:text-primary-foreground md:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
+            aria-label={menuOpen ? NAV_MENU_LABELS.close : NAV_MENU_LABELS.open}
           >
             {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -186,7 +182,7 @@ export function Header() {
       {menuOpen && (
         <div className="border-t border-border/50 bg-background/95 backdrop-blur-xl md:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-6 py-4">
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
