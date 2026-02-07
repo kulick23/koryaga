@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { type FormEvent, useMemo, useState } from "react"
 import { Menu, Minus, Plus, ShoppingBag, X } from "lucide-react"
 
 import { BRAND_NAME } from "@/constants/brand"
@@ -11,6 +11,10 @@ import { addToCart, clearCart, removeFromCart } from "@/store/slices/catalogSlic
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const [orderName, setOrderName] = useState("")
+  const [orderPhone, setOrderPhone] = useState("")
+  const [orderComment, setOrderComment] = useState("")
   const dispatch = useAppDispatch()
   const cartCount = useAppSelector((state) =>
     Object.values(state.catalog.cart).reduce((sum, qty) => sum + qty, 0)
@@ -69,18 +73,82 @@ export function Header() {
             {cartOpen && (
               <div className="absolute right-0 mt-3 w-[22rem] rounded-2xl border border-border bg-card p-4 shadow-2xl">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-foreground">{CART_LABELS.title}</span>
+                  <span className="text-sm font-semibold text-foreground">
+                    {checkoutOpen ? CART_LABELS.checkoutTitle : CART_LABELS.title}
+                  </span>
                   <button
                     type="button"
                     className="rounded-full p-1 text-muted-foreground hover:text-foreground"
-                    onClick={() => setCartOpen(false)}
+                    onClick={() => {
+                      setCartOpen(false)
+                      setCheckoutOpen(false)
+                    }}
                     aria-label={CART_LABELS.closeAria}
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
 
-                {cartItems.length === 0 ? (
+                {checkoutOpen ? (
+                  <form
+                    onSubmit={(event: FormEvent) => {
+                      event.preventDefault()
+                    }}
+                    className="mt-4 flex flex-col gap-4"
+                  >
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-foreground">
+                        {CART_LABELS.fields.name.label}
+                      </label>
+                      <input
+                        type="text"
+                        value={orderName}
+                        onChange={(event) => setOrderName(event.target.value)}
+                        placeholder={CART_LABELS.fields.name.placeholder}
+                        className="w-full rounded-xl border border-border bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-foreground">
+                        {CART_LABELS.fields.phone.label}
+                      </label>
+                      <input
+                        type="tel"
+                        value={orderPhone}
+                        onChange={(event) => setOrderPhone(event.target.value)}
+                        placeholder={CART_LABELS.fields.phone.placeholder}
+                        className="w-full rounded-xl border border-border bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-foreground">
+                        {CART_LABELS.fields.comment.label}
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={orderComment}
+                        onChange={(event) => setOrderComment(event.target.value)}
+                        placeholder={CART_LABELS.fields.comment.placeholder}
+                        className="w-full resize-none rounded-xl border border-border bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                    </div>
+                    <div className="mt-2 flex items-center gap-2">
+                      <button
+                        type="button"
+                        className="flex-1 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground hover:border-primary hover:text-primary"
+                        onClick={() => setCheckoutOpen(false)}
+                      >
+                        {CART_LABELS.backToCart}
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
+                      >
+                        {CART_LABELS.submit}
+                      </button>
+                    </div>
+                  </form>
+                ) : cartItems.length === 0 ? (
                   <p className="mt-4 text-sm text-muted-foreground">
                     {CART_LABELS.empty}
                   </p>
@@ -158,6 +226,7 @@ export function Header() {
                       <button
                         type="button"
                         className="flex-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
+                        onClick={() => setCheckoutOpen(true)}
                       >
                         {CART_LABELS.checkout}
                       </button>

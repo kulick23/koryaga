@@ -137,6 +137,17 @@ export const ru = {
     total: "Итого",
     clear: "Очистить",
     checkout: "Оформить",
+    checkoutTitle: "Оформление заказа",
+    backToCart: "Назад в корзину",
+    fields: {
+      name: "Имя",
+      namePlaceholder: "Ваше имя",
+      phone: "Телефон",
+      phonePlaceholder: "+375 (__) ___-__-__",
+      comment: "Комментарий",
+      commentPlaceholder: "Например: доставка после 18:00",
+    },
+    submit: "Отправить заказ",
   },
   footer: {
     copyright: "2026 KORYAGA. Все права защищены.",
