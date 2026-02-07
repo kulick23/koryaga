@@ -148,6 +148,13 @@ export const ru = {
       commentPlaceholder: "Например: доставка после 18:00",
     },
     submit: "Отправить заказ",
+    submitSuccess: "Заказ отправлен!",
+    validation: {
+      nameRequired: "Введите имя",
+      nameMin: "Имя должно быть не короче 2 символов",
+      phoneRequired: "Введите номер телефона",
+      phoneInvalid: "Введите корректный номер телефона",
+    },
   },
   footer: {
     copyright: "2026 KORYAGA. Все права защищены.",

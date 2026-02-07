@@ -13,6 +13,7 @@ export const CART_LABELS = {
   checkoutTitle: t("cart.checkoutTitle"),
   backToCart: t("cart.backToCart"),
   submit: t("cart.submit"),
+  submitSuccess: t("cart.submitSuccess"),
   fields: {
     name: {
       label: t("cart.fields.name"),
@@ -26,5 +27,11 @@ export const CART_LABELS = {
       label: t("cart.fields.comment"),
       placeholder: t("cart.fields.commentPlaceholder"),
     },
+  },
+  validation: {
+    nameRequired: t("cart.validation.nameRequired"),
+    nameMin: t("cart.validation.nameMin"),
+    phoneRequired: t("cart.validation.phoneRequired"),
+    phoneInvalid: t("cart.validation.phoneInvalid"),
   },
 }

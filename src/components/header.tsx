@@ -15,6 +15,11 @@ export function Header() {
   const [orderName, setOrderName] = useState("")
   const [orderPhone, setOrderPhone] = useState("")
   const [orderComment, setOrderComment] = useState("")
+  const [orderSent, setOrderSent] = useState(false)
+  const [touched, setTouched] = useState({
+    name: false,
+    phone: false,
+  })
   const dispatch = useAppDispatch()
   const cartCount = useAppSelector((state) =>
     Object.values(state.catalog.cart).reduce((sum, qty) => sum + qty, 0)
@@ -34,6 +39,20 @@ export function Header() {
     if (!item) return sum
     return sum + item.product.price * item.qty
   }, 0)
+  const normalizedPhone = orderPhone.replace(/\D/g, "")
+  const nameError = (() => {
+    if (!touched.name) return ""
+    if (!orderName.trim()) return CART_LABELS.validation.nameRequired
+    if (orderName.trim().length < 2) return CART_LABELS.validation.nameMin
+    return ""
+  })()
+  const phoneError = (() => {
+    if (!touched.phone) return ""
+    if (!orderPhone.trim()) return CART_LABELS.validation.phoneRequired
+    if (normalizedPhone.length < 10) return CART_LABELS.validation.phoneInvalid
+    return ""
+  })()
+  const isFormValid = !nameError && !phoneError && orderName.trim() && orderPhone.trim()
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
@@ -93,9 +112,23 @@ export function Header() {
                   <form
                     onSubmit={(event: FormEvent) => {
                       event.preventDefault()
+                      setTouched({ name: true, phone: true })
+                      if (!isFormValid) return
+                      dispatch(clearCart())
+                      setOrderSent(true)
+                      setTimeout(() => setOrderSent(false), 2500)
+                      setOrderName("")
+                      setOrderPhone("")
+                      setOrderComment("")
+                      setTouched({ name: false, phone: false })
                     }}
                     className="mt-4 flex flex-col gap-4"
                   >
+                    {orderSent && (
+                      <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
+                        {CART_LABELS.submitSuccess}
+                      </div>
+                    )}
                     <div>
                       <label className="mb-2 block text-sm font-medium text-foreground">
                         {CART_LABELS.fields.name.label}
@@ -104,9 +137,13 @@ export function Header() {
                         type="text"
                         value={orderName}
                         onChange={(event) => setOrderName(event.target.value)}
+                        onBlur={() => setTouched((prev) => ({ ...prev, name: true }))}
                         placeholder={CART_LABELS.fields.name.placeholder}
                         className="w-full rounded-xl border border-border bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
+                      {nameError && (
+                        <p className="mt-1 text-xs text-destructive">{nameError}</p>
+                      )}
                     </div>
                     <div>
                       <label className="mb-2 block text-sm font-medium text-foreground">
@@ -116,9 +153,13 @@ export function Header() {
                         type="tel"
                         value={orderPhone}
                         onChange={(event) => setOrderPhone(event.target.value)}
+                        onBlur={() => setTouched((prev) => ({ ...prev, phone: true }))}
                         placeholder={CART_LABELS.fields.phone.placeholder}
                         className="w-full rounded-xl border border-border bg-secondary px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
+                      {phoneError && (
+                        <p className="mt-1 text-xs text-destructive">{phoneError}</p>
+                      )}
                     </div>
                     <div>
                       <label className="mb-2 block text-sm font-medium text-foreground">
@@ -142,7 +183,8 @@ export function Header() {
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
+                        disabled={!isFormValid}
+                        className="flex-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_20px_rgba(200,255,0,0.3)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:shadow-none"
                       >
                         {CART_LABELS.submit}
                       </button>
