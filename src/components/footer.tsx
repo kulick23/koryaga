@@ -26,11 +26,6 @@ export function Footer() {
           <div />
         </div>
 
-        <div className="mt-10 border-t border-border pt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            {FOOTER_COPYRIGHT}
-          </p>
-        </div>
       </div>
     </footer>
   )
