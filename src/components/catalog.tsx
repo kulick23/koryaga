@@ -20,6 +20,8 @@ const getWrappedIndex = (index: number, length: number) => {
 const formatPrice = (price: number | string) =>
   typeof price === "number" ? `${price.toLocaleString("ru-RU")} Br` : price
 
+const PAGINATION_VISIBLE_PAGES = 5
+
 export function Catalog() {
   const dispatch = useAppDispatch()
   const { categories, products, activeCategory } = useAppSelector((state) => state.catalog)
@@ -38,6 +40,18 @@ export function Catalog() {
     (currentPage - 1) * CATALOG_ITEMS_PER_PAGE,
     currentPage * CATALOG_ITEMS_PER_PAGE
   )
+  const pageWindowHalf = Math.floor(PAGINATION_VISIBLE_PAGES / 2)
+  const pageWindowStart = Math.max(
+    1,
+    Math.min(currentPage - pageWindowHalf, totalPages - PAGINATION_VISIBLE_PAGES + 1)
+  )
+  const pageWindowEnd = Math.min(totalPages, pageWindowStart + PAGINATION_VISIBLE_PAGES - 1)
+  const visiblePages = Array.from(
+    { length: pageWindowEnd - pageWindowStart + 1 },
+    (_, index) => pageWindowStart + index
+  )
+  const showLeftDots = pageWindowStart > 1
+  const showRightDots = pageWindowEnd < totalPages
 
   useEffect(() => {
     setPage(1)
@@ -212,8 +226,13 @@ export function Catalog() {
             </button>
 
             <div className="flex items-center gap-2">
-              {Array.from({ length: totalPages }, (_, index) => {
-                const pageNumber = index + 1
+              {showLeftDots && (
+                <span className="px-1 text-sm text-muted-foreground" aria-hidden="true">
+                  ...
+                </span>
+              )}
+
+              {visiblePages.map((pageNumber) => {
                 const isActive = pageNumber === currentPage
                 return (
                   <button
@@ -230,6 +249,12 @@ export function Catalog() {
                   </button>
                 )
               })}
+
+              {showRightDots && (
+                <span className="px-1 text-sm text-muted-foreground" aria-hidden="true">
+                  ...
+                </span>
+              )}
             </div>
 
             <button
