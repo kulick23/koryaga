@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react"
 
 import { CATALOG_ALL_CATEGORY, CATALOG_CONTENT, CATALOG_ITEMS_PER_PAGE } from "@/constants/catalog"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
+import { getOptimizedItemImagePath } from "@/lib/images"
 import { addToCart, setActiveCategory, type Product } from "@/store/slices/catalogSlice"
 
 const getProductImages = (product: Product) => {
@@ -88,10 +89,13 @@ export function Catalog() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {pagedProducts.map((product) => {
+          {pagedProducts.map((product, productIndex) => {
             const images = getProductImages(product)
             const currentSlide = getWrappedIndex(activeSlides[product.id] ?? 0, images.length)
             const hasMultipleImages = images.length > 1
+            const imageSrc = images[currentSlide]
+            const optimizedImageSrc = getOptimizedItemImagePath(imageSrc)
+            const shouldPreload = currentPage === 1 && productIndex < 3
 
             return (
               <div
@@ -100,10 +104,16 @@ export function Catalog() {
               >
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <img
-                    src={images[currentSlide]}
+                    src={optimizedImageSrc}
                     alt={`${product.name} - фото ${currentSlide + 1}`}
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
+                    loading={shouldPreload ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={shouldPreload ? "high" : "low"}
+                    onError={(event) => {
+                      event.currentTarget.onerror = null
+                      event.currentTarget.src = imageSrc
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
 

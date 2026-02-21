@@ -5,6 +5,7 @@ import { BRAND_NAME } from "@/constants/brand"
 import { CART_LABELS } from "@/constants/cart"
 import { NAV_LINKS, NAV_MENU_LABELS } from "@/constants/navigation"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
+import { getOptimizedItemImagePath } from "@/lib/images"
 import { addToCart, clearCart, removeFromCart } from "@/store/slices/catalogSlice"
 
 const formatPrice = (price: number | string) =>
@@ -212,12 +213,17 @@ export function Header() {
                             className="flex items-center gap-3 rounded-xl border border-border/60 bg-background/40 p-3"
                           >
                             <div className="h-12 w-12 overflow-hidden rounded-lg bg-secondary">
-                              <img
-                                src={product.image}
-                                alt={product.name}
-                                className="h-full w-full object-cover"
-                                loading="lazy"
-                              />
+                                <img
+                                  src={getOptimizedItemImagePath(product.image ?? "/placeholder.svg")}
+                                  alt={product.name}
+                                  className="h-full w-full object-cover"
+                                  loading="lazy"
+                                  decoding="async"
+                                  onError={(event) => {
+                                    event.currentTarget.onerror = null
+                                    event.currentTarget.src = product.image ?? "/placeholder.svg"
+                                  }}
+                                />
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-semibold text-foreground">
