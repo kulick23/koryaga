@@ -1,109 +1,494 @@
 {
-  "categories": ["Все", "Букеты", "Композиции", "Свадебные", "Экзотика"],
+  "categories": ["Все", "Букеты к 8-му марта", "Композиции для оформлений", "Рутарий в коряжке", "Корпаративные заказы", "Весенние композиции с первоцветами"],
   "products": [
     {
       "id": 1,
-      "name": "Букет 01",
-      "category": "Букеты",
-      "price": 4500,
-      "image": "/items/bouquet-1.jpg",
+      "name": "Букет из 5-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 35,
+      "image": "/items/bouquet-1.PNG",
       "badge": "Хит"
     },
     {
       "id": 2,
-      "name": "Букет 02",
-      "category": "Букеты",
-      "price": 5200,
-      "image": "/items/bouquet-2.jpg",
+      "name": "Букет из 5-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 35,
+      "image": "/items/bouquet-2.PNG",
       "badge": null
     },
     {
       "id": 3,
-      "name": "Букет 03",
-      "category": "Букеты",
-      "price": 7800,
-      "image": "/items/bouquet-3.jpg",
+      "name": "Букет из 5-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 35,
+      "image": "/items/bouquet-3.PNG",
       "badge": "Новинка"
     },
     {
       "id": 4,
-      "name": "Букет 04",
-      "category": "Букеты",
-      "price": 8500,
-      "image": "/items/bouquet-4.jpg",
+      "name": "Букет из 17-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 85,
+      "image": "/items/bouquet-4.PNG",
       "badge": null
     },
     {
       "id": 5,
-      "name": "Букет 05",
-      "category": "Букеты",
-      "price": 3900,
-      "image": "/items/bouquet-5.jpg",
+      "name": "Букет из 17-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 85,
+      "image": "/items/bouquet-5.PNG",
       "badge": "Скидка"
     },
     {
       "id": 6,
-      "name": "Композиция 06",
-      "category": "Композиции",
+      "name": "Букет из 17-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
       "price": 6200,
-      "image": "/items/bouquet-6.jpg",
+      "image": "/items/bouquet-6.PNG",
       "badge": null
     },
     {
       "id": 7,
-      "name": "Свадебный 07",
-      "category": "Свадебные",
-      "price": 9200,
-      "image": "/items/bouquet-7.png",
+      "name": "Букет из 17-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 85,
+      "image": "/items/bouquet-7.PNG",
       "badge": "Премиум"
     },
     {
       "id": 8,
-      "name": "Экзотика 08",
-      "category": "Экзотика",
-      "price": 9900,
-      "image": "/items/bouquet-8.png",
+      "name": "Букет из 17-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 85,
+      "image": "/items/bouquet-8.PNG",
       "badge": null
     },
     {
       "id": 9,
-      "name": "Букет 09",
-      "category": "Букеты",
-      "price": 5600,
-      "image": "/items/bouquet-9.png",
+      "name": "Букет из 17-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 85,
+      "image": "/items/bouquet-9.PNG",
       "badge": null
     },
     {
       "id": 10,
-      "name": "Композиция 10",
-      "category": "Композиции",
-      "price": 7400,
-      "image": "/items/bouquet-10.png",
+      "name": "Букет из 17-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 85,
+      "image": "/items/bouquet-10.PNG",
       "badge": "Новинка"
     },
     {
       "id": 11,
-      "name": "Свадебный 11",
-      "category": "Свадебные",
-      "price": 8800,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
       "image": "/items/bouquet-11.png",
       "badge": null
     },
     {
       "id": 12,
-      "name": "Экзотика 12",
-      "category": "Экзотика",
-      "price": 10500,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
       "image": "/items/bouquet-12.png",
       "badge": "Премиум"
     },
     {
       "id": 13,
-      "name": "Букет 13",
-      "category": "Букеты",
-      "price": 6100,
-      "image": "/items/bouquet-13.png",
+      "name": "Букет из 25-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 125,
+      "image": "/items/bouquet-13.jpg",
+      "badge": null
+    },
+    {
+      "id": 14,
+      "name": "Букет из 35-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 150,
+      "image": "/items/bouquet-14.jpg",
+      "badge": null
+    },
+    {
+      "id": 15,
+      "name": "Букет из розовых тюльпанов 25 штук",
+      "category": "Букеты к 8-му марта",
+      "price": 110,
+      "image": "/items/bouquet-15.jpg",
+      "badge": null
+    },
+      {
+      "id": 16,
+      "name": "Букет нежность 25-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 125,
+      "image": "/items/bouquet-16.jpg",
+      "badge": null
+    },
+      {
+      "id": 17,
+      "name": "Букет из красных тюльпанов 11 штук",
+      "category": "Букеты к 8-му марта",
+      "price": 55,
+      "image": "/items/bouquet-17.jpg",
+      "badge": null
+    },
+      {
+      "id": 18,
+      "name": "Букет весенний микс из 35-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 150,
+      "image": "/items/bouquet-18.jpg",
+      "badge": null
+    },
+      {
+      "id": 19,
+      "name": "Букет из жёлтых тюльпанов 13 штук",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-19.jpg",
+      "badge": null
+    },
+      {
+      "id": 20,
+      "name": "Букет из 29-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 130,
+      "image": "/items/bouquet-20.jpg",
+      "badge": null
+    },
+      {
+      "id": 21,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-21.png",
+      "badge": null
+    },
+      {
+      "id": 22,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-22.png",
+      "badge": null
+    },
+      {
+      "id": 23,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-23.png",
+      "badge": null
+    },
+      {
+      "id": 24,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-24.png",
+      "badge": null
+    },
+      {
+      "id": 25,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-25.png",
+      "badge": null
+    },
+      {
+      "id": 26,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-26.png",
+      "badge": null
+    },
+      {
+      "id": 27,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-27.png",
+      "badge": null
+    },
+      {
+      "id": 28,
+      "name": "Букет из 15-ти тюльпанов",
+      "category": "Букеты к 8-му марта",
+      "price": 70,
+      "image": "/items/bouquet-28.png",
+      "badge": null
+    },
+      {
+      "id": 29,
+      "name": "Композиция 1",
+      "category": "Композиции для оформлений",
+      "price": "Договорная",
+      "image": "/items/bouquet-29.png",
+      "badge": null
+    },
+      {
+      "id": 30,
+      "name": "Композиция 2",
+      "category": "Композиции для оформлений",
+      "price": "Договорная",
+      "image": "/items/bouquet-30.png",
+      "badge": null
+    },
+      {
+      "id": 31,
+      "name": "Композиция 3",
+      "category": "Композиции для оформлений",
+      "price": "Договорная",
+      "image": "/items/bouquet-31.png",
+      "badge": null
+    },
+      {
+      "id": 32,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "category": "Рутарий в коряжке",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/bouquet-32.png",
+      "badge": null
+    },
+      {
+      "id": 33,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "category": "Рутарий в коряжке",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/bouquet-33.png",
+      "badge": null
+    },
+      {
+      "id": 34,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "category": "Рутарий в коряжке",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/bouquet-34.png",
+      "badge": null
+    },
+      {
+      "id": 35,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "category": "Рутарий в коряжке",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/bouquet-35.png",
+      "badge": null
+    },
+      {
+      "id": 36,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "category": "Рутарий в коряжке",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/bouquet-36.png",
+      "badge": null
+    },
+      {
+      "id": 37,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "category": "Рутарий в коряжке",
+      "price": "от 250 рублей под заказ",
+      "image": "/items/bouquet-37.png",
+      "badge": null
+    },
+      {
+      "id": 38,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "category": "Рутарий в коряжке",
+      "price": 70,
+      "image": "/items/bouquet-38.png",
+      "badge": null
+    },
+      {
+      "id": 39,
+      "name": "Кампанула",
+      "category": "Корпаративные заказы",
+      "price": 70,
+      "image": "/items/bouquet-39.png",
+      "badge": null
+    },
+      {
+      "id": 40,
+      "name": "Лаванда в ящичке",
+      "category": "Корпаративные заказы",
+      "price": 75,
+      "image": "/items/bouquet-40.png",
+      "badge": null
+    },
+      {
+      "id": 41,
+      "name": "Мускари в эко кашпо",
+      "category": "Корпаративные заказы",
+      "price": 20,
+      "image": "/items/bouquet-41.JPG",
+      "badge": null
+    },
+      {
+      "id": 42,
+      "name": "Гортензия карликовая в эко кашпо",
+      "category": "Корпаративные заказы",
+      "price": 65,
+      "image": "/items/bouquet-42.jpg",
+      "badge": null
+    },
+      {
+      "id": 43,
+      "name": "Гиацинты без полива",
+      "category": "Корпаративные заказы",
+      "price": 20,
+      "image": "/items/bouquet-43.JPG",
+      "badge": null
+    },
+      {
+      "id": 44,
+      "name": "Кампанула с оформлением",
+      "category": "Корпаративные заказы",
+      "price": 65,
+      "image": "/items/bouquet-44.JPG",
+      "badge": null
+    },
+      {
+      "id": 45,
+      "name": "Весенний ящичек с первоцветами",
+      "category": "Весенние композиции с первоцветами",
+      "price": 65,
+      "image": "/items/bouquet-45.png",
+      "badge": null
+    },
+      {
+      "id": 46,
+      "name": "Мини садик с Лавандой и луковичными",
+      "category": "Весенние композиции с первоцветами",
+      "price": 120,
+      "image": "/items/bouquet-46.png",
+      "badge": null
+    },
+      {
+      "id": 47,
+      "name": "Мини садик «Весна на подоконнике»",
+      "category": "Весенние композиции с первоцветами",
+      "price": 120,
+      "image": "/items/bouquet-47.png",
+      "badge": null
+    },
+      {
+      "id": 48,
+      "name": "Мини садик «Весна на подоконнике»",
+      "category": "Весенние композиции с первоцветами",
+      "price": 120,
+      "image": "/items/bouquet-48.png",
+      "badge": null
+    },
+      {
+      "id": 49,
+      "name": "Мини садик «Весна на подоконнике»",
+      "category": "Весенние композиции с первоцветами",
+      "price": 120,
+      "image": "/items/bouquet-49.png",
+      "badge": null
+    },
+      {
+      "id": 50,
+      "name": "Мини садик «Весна на подоконнике»",
+      "category": "Весенние композиции с первоцветами",
+      "price": 120,
+      "image": "/items/bouquet-50.png",
+      "badge": null
+    },
+      {
+      "id": 51,
+      "name": "Большая полянка в пеньке с гиацинтами / нарцисссами",
+      "category": "Весенние композиции с первоцветами",
+      "price": 60,
+      "image": "/items/bouquet-51.png",
+      "badge": null
+    },
+      {
+      "id": 52,
+      "name": "Большая полянка в пеньке с гиацинтами / нарцисссами",
+      "category": "Весенние композиции с первоцветами",
+      "price": 60,
+      "image": "/items/bouquet-52.png",
+      "badge": null
+    },
+      {
+      "id": 53,
+      "name": "Большая полянка в пеньке с гиацинтами / нарцисссами",
+      "category": "Весенние композиции с первоцветами",
+      "price": 60,
+      "image": "/items/bouquet-53.png",
+      "badge": null
+    },
+      {
+      "id": 54,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-54.png",
+      "badge": null
+    },
+      {
+      "id": 55,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-55.png",
+      "badge": null
+    },
+      {
+      "id": 56,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-56.png",
+      "badge": null
+    },
+      {
+      "id": 57,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-57.png",
+      "badge": null
+    },
+      {
+      "id": 58,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-58.JPG",
+      "badge": null
+    },
+      {
+      "id": 59,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-59.JPG",
+      "badge": null
+    },
+      {
+      "id": 60,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-60.JPG",
+      "badge": null
+    },
+      {
+      "id": 61,
+      "name": "Большая весенняя клумба в ящичке",
+      "category": "Весенние композиции с первоцветами",
+      "price": 170,
+      "image": "/items/bouquet-61.PNG",
       "badge": null
     }
+    
   ]
 }

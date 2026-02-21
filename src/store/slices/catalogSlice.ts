@@ -9,7 +9,8 @@ export type Product = {
   name: string
   category: Exclude<CatalogCategory, "Все">
   price: number
-  image: string
+  image?: string
+  images?: string[]
   badge?: string | null
 }
 

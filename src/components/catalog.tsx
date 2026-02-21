@@ -3,11 +3,25 @@ import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react"
 
 import { CATALOG_ALL_CATEGORY, CATALOG_CONTENT, CATALOG_ITEMS_PER_PAGE } from "@/constants/catalog"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
-import { addToCart, setActiveCategory } from "@/store/slices/catalogSlice"
+import { addToCart, setActiveCategory, type Product } from "@/store/slices/catalogSlice"
+
+const getProductImages = (product: Product) => {
+  const images = product.images?.filter(Boolean) ?? []
+  if (images.length > 0) return images
+  if (product.image) return [product.image]
+  return ["/placeholder.svg"]
+}
+
+const getWrappedIndex = (index: number, length: number) => {
+  if (length <= 0) return 0
+  return (index + length) % length
+}
+
 export function Catalog() {
   const dispatch = useAppDispatch()
   const { categories, products, activeCategory } = useAppSelector((state) => state.catalog)
   const [page, setPage] = useState(1)
+  const [activeSlides, setActiveSlides] = useState<Record<number, number>>({})
 
   const filteredProducts = useMemo(() => {
     return activeCategory === CATALOG_ALL_CATEGORY
@@ -57,73 +71,129 @@ export function Catalog() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {pagedProducts.map((product) => (
-            <div
-              key={product.id}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-[0_0_40px_rgba(200,255,0,0.05)]"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.name}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
+          {pagedProducts.map((product) => {
+            const images = getProductImages(product)
+            const currentSlide = getWrappedIndex(activeSlides[product.id] ?? 0, images.length)
+            const hasMultipleImages = images.length > 1
 
-                {product.badge && (
-                  <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
-                    {product.badge}
-                  </span>
-                )}
-
-                {/* Like functionality is temporarily disabled; keep for future re-enable.
-                <button
-                  type="button"
-                  onClick={() => dispatch(toggleLike(product.id))}
-                  className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full backdrop-blur-sm transition-all ${
-                    likedIds.includes(product.id)
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-card/60 text-foreground hover:bg-primary hover:text-primary-foreground"
-                  }`}
-                  aria-label={
-                    likedIds.includes(product.id)
-                      ? CATALOG_CONTENT.favoriteRemoveAria
-                      : CATALOG_CONTENT.favoriteAddAria
-                  }
-                >
-                  <Heart
-                    className="h-5 w-5"
-                    fill={likedIds.includes(product.id) ? "currentColor" : "none"}
+            return (
+              <div
+                key={product.id}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-[0_0_40px_rgba(200,255,0,0.05)]"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <img
+                    src={images[currentSlide]}
+                    alt={`${product.name} - фото ${currentSlide + 1}`}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                   />
-                </button>
-                */}
-              </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
 
-              <div className="relative p-5">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  {product.category}
-                </span>
-                <h3 className="mt-1 text-lg font-semibold text-foreground">
-                  {product.name}
-                </h3>
+                  {product.badge && (
+                    <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
+                      {product.badge}
+                    </span>
+                  )}
 
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-2xl font-bold text-primary">
-                    {product.price.toLocaleString("ru-RU")} ₽
-                  </span>
+                  {hasMultipleImages && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveSlides((prev) => ({
+                            ...prev,
+                            [product.id]: getWrappedIndex((prev[product.id] ?? 0) - 1, images.length),
+                          }))
+                        }
+                        className="pointer-events-none absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-card/70 text-foreground opacity-0 backdrop-blur-sm transition-all group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 hover:bg-primary hover:text-primary-foreground"
+                        aria-label="Предыдущее фото"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveSlides((prev) => ({
+                            ...prev,
+                            [product.id]: getWrappedIndex((prev[product.id] ?? 0) + 1, images.length),
+                          }))
+                        }
+                        className="pointer-events-none absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-card/70 text-foreground opacity-0 backdrop-blur-sm transition-all group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 hover:bg-primary hover:text-primary-foreground"
+                        aria-label="Следующее фото"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+
+                      <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+                        {images.map((_, index) => (
+                          <button
+                            key={`${product.id}-${index}`}
+                            type="button"
+                            onClick={() =>
+                              setActiveSlides((prev) => ({
+                                ...prev,
+                                [product.id]: index,
+                              }))
+                            }
+                            aria-label={`Открыть фото ${index + 1}`}
+                            className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                              index === currentSlide ? "bg-primary" : "bg-card/80"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  {/* Like functionality is temporarily disabled; keep for future re-enable.
                   <button
                     type="button"
-                    onClick={() => dispatch(addToCart(product.id))}
-                    className="flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
+                    onClick={() => dispatch(toggleLike(product.id))}
+                    className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full backdrop-blur-sm transition-all ${
+                      likedIds.includes(product.id)
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-card/60 text-foreground hover:bg-primary hover:text-primary-foreground"
+                    }`}
+                    aria-label={
+                      likedIds.includes(product.id)
+                        ? CATALOG_CONTENT.favoriteRemoveAria
+                        : CATALOG_CONTENT.favoriteAddAria
+                    }
                   >
-                    <ShoppingBag className="h-4 w-4" />
-                    {CATALOG_CONTENT.addToCart}
+                    <Heart
+                      className="h-5 w-5"
+                      fill={likedIds.includes(product.id) ? "currentColor" : "none"}
+                    />
                   </button>
+                  */}
+                </div>
+
+                <div className="relative p-5">
+                  <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    {product.category}
+                  </span>
+                  <h3 className="mt-1 text-lg font-semibold text-foreground">
+                    {product.name}
+                  </h3>
+
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="text-2xl font-bold text-primary">
+                      {product.price.toLocaleString("ru-RU")} ₽
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => dispatch(addToCart(product.id))}
+                      className="flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
+                    >
+                      <ShoppingBag className="h-4 w-4" />
+                      {CATALOG_CONTENT.addToCart}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         {totalPages > 1 && (
