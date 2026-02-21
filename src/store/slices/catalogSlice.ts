@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/tool
 
 import { CATALOG_ALL_CATEGORY } from "@/constants/catalog"
 
-export type CatalogCategory = "Все" | "Букеты" | "Композиции" | "Свадебные" | "Экзотика"
+export type CatalogCategory = string
 
 export type Product = {
   id: number
   name: string
-  category: Exclude<CatalogCategory, "Все">
-  price: number
+  category: CatalogCategory
+  price: number | string
   image?: string
   images?: string[]
   badge?: string | null
@@ -39,6 +39,15 @@ type CatalogPayload = {
   products: Product[]
 }
 
+type RawProduct = Omit<Product, "category"> & {
+  category: string | number
+}
+
+type RawCatalogPayload = {
+  categories: CatalogCategory[]
+  products: RawProduct[]
+}
+
 export const fetchCatalog = createAsyncThunk<CatalogPayload>(
   "catalog/fetchCatalog",
   async () => {
@@ -46,7 +55,36 @@ export const fetchCatalog = createAsyncThunk<CatalogPayload>(
     if (!response.ok) {
       throw new Error("Не удалось загрузить каталог")
     }
-    return (await response.json()) as CatalogPayload
+
+    const payload = (await response.json()) as RawCatalogPayload
+    const categories = payload.categories ?? []
+    const fallbackCategory = categories.find((category) => category !== CATALOG_ALL_CATEGORY)
+    const safeFallbackCategory = fallbackCategory ?? categories[0] ?? CATALOG_ALL_CATEGORY
+
+    const products = (payload.products ?? []).map((product) => {
+      const rawCategory = product.category
+      const parsedIndex =
+        typeof rawCategory === "number"
+          ? rawCategory
+          : typeof rawCategory === "string" && /^\d+$/.test(rawCategory)
+            ? Number(rawCategory)
+            : null
+
+      const normalizedCategory =
+        parsedIndex !== null
+          ? categories[parsedIndex] ?? safeFallbackCategory
+          : rawCategory || safeFallbackCategory
+
+      return {
+        ...product,
+        category: normalizedCategory,
+      }
+    })
+
+    return {
+      categories,
+      products,
+    }
   }
 )
 
