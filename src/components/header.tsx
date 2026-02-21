@@ -5,6 +5,7 @@ import { BRAND_NAME } from "@/constants/brand"
 import { CART_LABELS } from "@/constants/cart"
 import { NAV_LINKS, NAV_MENU_LABELS } from "@/constants/navigation"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
+import { sendOrderEmail } from "@/lib/emailjs"
 import { getOptimizedItemImagePath } from "@/lib/images"
 import { addToCart, clearCart, removeFromCart } from "@/store/slices/catalogSlice"
 
@@ -14,6 +15,12 @@ const formatPrice = (price: number | string) =>
 const getLineTotal = (price: number | string, qty: number) =>
   typeof price === "number" ? `${(price * qty).toLocaleString("ru-RU")} Br` : price
 
+const getReadableOrderError = (error: unknown) => {
+  if (error instanceof Error) return error.message
+  if (typeof error === "string") return error
+  return "Не удалось отправить заказ. Проверь EmailJS настройки и попробуй снова."
+}
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
@@ -22,6 +29,8 @@ export function Header() {
   const [orderPhone, setOrderPhone] = useState("")
   const [orderComment, setOrderComment] = useState("")
   const [orderSent, setOrderSent] = useState(false)
+  const [orderError, setOrderError] = useState("")
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false)
   const [touched, setTouched] = useState({
     name: false,
     phone: false,
@@ -117,23 +126,58 @@ export function Header() {
 
                 {checkoutOpen ? (
                   <form
-                    onSubmit={(event: FormEvent) => {
+                    onSubmit={async (event: FormEvent) => {
                       event.preventDefault()
                       setTouched({ name: true, phone: true })
                       if (!isFormValid) return
-                      dispatch(clearCart())
-                      setOrderSent(true)
-                      setTimeout(() => setOrderSent(false), 2500)
-                      setOrderName("")
-                      setOrderPhone("")
-                      setOrderComment("")
-                      setTouched({ name: false, phone: false })
+
+                      setOrderError("")
+                      setIsSubmittingOrder(true)
+                      const lines = cartItems
+                        .map((item) => {
+                          if (!item) return null
+                          return {
+                            name: item.product.name,
+                            qty: item.qty,
+                            price: formatPrice(item.product.price),
+                            lineTotal: getLineTotal(item.product.price, item.qty),
+                          }
+                        })
+                        .filter((line): line is { name: string; qty: number; price: string; lineTotal: string } => Boolean(line))
+
+                      try {
+                        await sendOrderEmail({
+                          customerName: orderName.trim(),
+                          customerPhone: orderPhone.trim(),
+                          comment: orderComment.trim(),
+                          lines,
+                          total: `${cartTotal.toLocaleString("ru-RU")} Br`,
+                        })
+
+                        dispatch(clearCart())
+                        setOrderSent(true)
+                        setTimeout(() => setOrderSent(false), 2500)
+                        setOrderName("")
+                        setOrderPhone("")
+                        setOrderComment("")
+                        setTouched({ name: false, phone: false })
+                      } catch (error) {
+                        console.error("Order email send failed:", error)
+                        setOrderError(getReadableOrderError(error))
+                      } finally {
+                        setIsSubmittingOrder(false)
+                      }
                     }}
                     className="mt-4 flex flex-col gap-4"
                   >
                     {orderSent && (
                       <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
                         {CART_LABELS.submitSuccess}
+                      </div>
+                    )}
+                    {orderError && (
+                      <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+                        {orderError}
                       </div>
                     )}
                     <div>
@@ -190,10 +234,10 @@ export function Header() {
                       </button>
                       <button
                         type="submit"
-                        disabled={!isFormValid}
+                        disabled={!isFormValid || isSubmittingOrder}
                         className="flex-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_20px_rgba(200,255,0,0.3)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:shadow-none"
                       >
-                        {CART_LABELS.submit}
+                        {isSubmittingOrder ? "Отправка..." : CART_LABELS.submit}
                       </button>
                     </div>
                   </form>
