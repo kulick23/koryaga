@@ -17,6 +17,9 @@ const getWrappedIndex = (index: number, length: number) => {
   return (index + length) % length
 }
 
+const formatPrice = (price: number | string) =>
+  typeof price === "number" ? `${price.toLocaleString("ru-RU")} Br` : price
+
 export function Catalog() {
   const dispatch = useAppDispatch()
   const { categories, products, activeCategory } = useAppSelector((state) => state.catalog)
@@ -179,7 +182,7 @@ export function Catalog() {
 
                   <div className="mt-4 flex items-center justify-between">
                     <span className="text-2xl font-bold text-primary">
-                      {product.price.toLocaleString("ru-RU")} ₽
+                      {formatPrice(product.price)}
                     </span>
                     <button
                       type="button"

@@ -7,6 +7,11 @@ import { NAV_LINKS, NAV_MENU_LABELS } from "@/constants/navigation"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
 import { addToCart, clearCart, removeFromCart } from "@/store/slices/catalogSlice"
 
+const formatPrice = (price: number | string) =>
+  typeof price === "number" ? `${price.toLocaleString("ru-RU")} Br` : price
+
+const getLineTotal = (price: number | string, qty: number) =>
+  typeof price === "number" ? `${(price * qty).toLocaleString("ru-RU")} Br` : price
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -37,6 +42,7 @@ export function Header() {
   }, [cart, products])
   const cartTotal = cartItems.reduce((sum, item) => {
     if (!item) return sum
+    if (typeof item.product.price !== "number") return sum
     return sum + item.product.price * item.qty
   }, 0)
   const normalizedPhone = orderPhone.replace(/\D/g, "")
@@ -218,7 +224,7 @@ export function Header() {
                                 {product.name}
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                {product.price.toLocaleString("ru-RU")} ₽
+                                {formatPrice(product.price)}
                               </p>
                               <div className="mt-2 flex items-center gap-2">
                                 <button
@@ -243,7 +249,7 @@ export function Header() {
                               </div>
                             </div>
                             <div className="text-sm font-semibold text-primary">
-                              {(product.price * qty).toLocaleString("ru-RU")} ₽
+                              {getLineTotal(product.price, qty)}
                             </div>
                           </div>
                         )
@@ -253,7 +259,7 @@ export function Header() {
                     <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
                       <span className="text-sm text-muted-foreground">{CART_LABELS.total}</span>
                       <span className="text-lg font-bold text-foreground">
-                        {cartTotal.toLocaleString("ru-RU")} ₽
+                        {cartTotal.toLocaleString("ru-RU")} Br
                       </span>
                     </div>
 
