@@ -82,7 +82,7 @@ export function Catalog() {
             return (
               <div
                 key={product.id}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-[0_0_40px_rgba(200,255,0,0.05)]"
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-[0_0_40px_rgba(200,255,0,0.05)]"
               >
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <img
@@ -172,7 +172,7 @@ export function Catalog() {
                   */}
                 </div>
 
-                <div className="relative p-5">
+                <div className="relative flex flex-1 flex-col p-5">
                   <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     {product.category}
                   </span>
@@ -180,14 +180,14 @@ export function Catalog() {
                     {product.name}
                   </h3>
 
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary">
+                  <div className="mt-auto flex items-end justify-between gap-3 pt-4">
+                    <span className="text-2xl font-bold leading-tight text-primary">
                       {formatPrice(product.price)}
                     </span>
                     <button
                       type="button"
                       onClick={() => dispatch(addToCart(product.id))}
-                      className="flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
+                      className="flex h-11 shrink-0 whitespace-nowrap items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
                     >
                       <ShoppingBag className="h-4 w-4" />
                       {CATALOG_CONTENT.addToCart}
