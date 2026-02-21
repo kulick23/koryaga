@@ -141,7 +141,9 @@ export function Header() {
                             qty: item.qty,
                             price: formatPrice(item.product.price),
                             lineTotal: getLineTotal(item.product.price, item.qty),
-                            imageUrl: item.product.image ?? item.product.images?.[0] ?? "",
+                            imageUrl: getOptimizedItemImagePath(
+                              item.product.image ?? item.product.images?.[0] ?? ""
+                            ),
                           }
                         })
                         .filter((line): line is { name: string; qty: number; price: string; lineTotal: string; imageUrl: string } => Boolean(line))
