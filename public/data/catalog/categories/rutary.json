@@ -1,0 +1,47 @@
+{
+  "products": [
+    {
+      "id": 32,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/optimized/bouquet-32.png",
+      "badge": null
+    },
+    {
+      "id": 33,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/optimized/bouquet-33.png",
+      "badge": null
+    },
+
+    {
+      "id": 35,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/optimized/bouquet-35.png",
+      "badge": null
+    },
+    {
+      "id": 36,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "price": "от 300 рублей под заказ",
+      "image": "/items/optimized/bouquet-36.png",
+      "badge": null
+    },
+    {
+      "id": 37,
+      "name": "Рутарий в морёной коряжке с Фаленопсисом и суккулентами",
+      "price": "от 250 рублей под заказ",
+      "image": "/items/optimized/bouquet-37.png",
+      "badge": null
+    },
+    {
+      "id": 38,
+      "name": "Рутарий с фаленопсисом",
+      "price": "от 250 рублей под заказ",
+      "image": "/items/bouquet-38.png",
+      "badge": null
+    }
+  ]
+}

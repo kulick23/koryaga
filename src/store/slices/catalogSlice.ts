@@ -40,28 +40,52 @@ type CatalogPayload = {
 }
 
 type RawProduct = Omit<Product, "category"> & {
-  category: string | number
+  category?: string | number
 }
 
-type RawCatalogPayload = {
+type RawCatalogIndexPayload = {
   categories: CatalogCategory[]
-  products: RawProduct[]
+  files?: Record<CatalogCategory, string>
 }
 
 export const fetchCatalog = createAsyncThunk<CatalogPayload>(
   "catalog/fetchCatalog",
   async () => {
-    const response = await fetch("/data/catalog.json")
-    if (!response.ok) {
+    const indexResponse = await fetch("/data/catalog/index.json")
+    if (!indexResponse.ok) {
       throw new Error("Не удалось загрузить каталог")
     }
 
-    const payload = (await response.json()) as RawCatalogPayload
+    const payload = (await indexResponse.json()) as RawCatalogIndexPayload
     const categories = payload.categories ?? []
     const fallbackCategory = categories.find((category) => category !== CATALOG_ALL_CATEGORY)
     const safeFallbackCategory = fallbackCategory ?? categories[0] ?? CATALOG_ALL_CATEGORY
+    const files = payload.files ?? {}
 
-    const products = (payload.products ?? []).map((product) => {
+    const categoryFiles = categories
+      .filter((category) => category !== CATALOG_ALL_CATEGORY)
+      .map((category) => ({
+        category,
+        file: files[category],
+      }))
+      .filter((entry): entry is { category: CatalogCategory; file: string } => Boolean(entry.file))
+
+    const productsByCategory = await Promise.all(
+      categoryFiles.map(async ({ category, file }) => {
+        const response = await fetch(file)
+        if (!response.ok) {
+          throw new Error(`Не удалось загрузить категорию: ${category}`)
+        }
+
+        const chunk = (await response.json()) as { products?: RawProduct[] }
+        return (chunk.products ?? []).map((product) => ({
+          ...product,
+          category: product.category ?? category,
+        }))
+      })
+    )
+
+    const products = productsByCategory.flat().map((product) => {
       const rawCategory = product.category
       const parsedIndex =
         typeof rawCategory === "number"

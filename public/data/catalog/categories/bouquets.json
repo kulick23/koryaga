@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": 23,
+      "name": "Букет из 15-ти цветов",
+      "price": 70,
+      "image": "/items/bouquet-23.png",
+      "badge": null
+    },
+    {
+      "id": 24,
+      "name": "Букет из 15-ти цветов",
+      "price": 70,
+      "image": "/items/bouquet-24.png",
+      "badge": null
+    },
+    {
+      "id": 25,
+      "name": "Букет из 15-ти цветов",
+      "price": 70,
+      "image": "/items/bouquet-25.png",
+      "badge": null
+    },
+    {
+      "id": 26,
+      "name": "Букет из 15-ти цветов",
+      "price": 70,
+      "image": "/items/bouquet-26.png",
+      "badge": null
+    },
+    {
+      "id": 27,
+      "name": "Букет из 15-ти цветов",
+      "price": 70,
+      "image": "/items/bouquet-27.png",
+      "badge": null
+    }
+  ]
+}

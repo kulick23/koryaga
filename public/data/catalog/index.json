@@ -1,0 +1,19 @@
+{
+  "categories": [
+    "Все",
+    "Букеты к 8-му марта",
+    "Букеты",
+    "Композиции для оформлений",
+    "Рутарий в коряжке",
+    "Корпаративные заказы",
+    "Весенние композиции с первоцветами"
+  ],
+  "files": {
+    "Букеты к 8-му марта": "/data/catalog/categories/bouquets-8-march.json",
+    "Композиции для оформлений": "/data/catalog/categories/arrangements.json",
+    "Рутарий в коряжке": "/data/catalog/categories/rutary.json",
+    "Корпаративные заказы": "/data/catalog/categories/corporate-orders.json",
+    "Весенние композиции с первоцветами": "/data/catalog/categories/spring-primroses.json",
+    "Букеты": "/data/catalog/categories/bouquets.json"
+  }
+}

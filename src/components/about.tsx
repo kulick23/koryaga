@@ -42,7 +42,7 @@ export function About() {
           <h2 className="mt-2 font-serif text-4xl font-bold text-foreground md:text-5xl">
             {ABOUT_CONTENT.title}
           </h2>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-6 whitespace-pre-line text-lg leading-relaxed text-muted-foreground">
             {ABOUT_CONTENT.description}
           </p>
 

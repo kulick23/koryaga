@@ -1,0 +1,165 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Букет из 5-ти тюльпанов",
+      "price": 35,
+      "image": "/items/bouquet-1.PNG",
+      "badge": "Хит"
+    },
+    {
+      "id": 2,
+      "name": "Букет из 5-ти тюльпанов",
+      "price": 35,
+      "image": "/items/bouquet-2.PNG",
+      "badge": null
+    },
+    {
+      "id": 3,
+      "name": "Букет из 5-ти тюльпанов",
+      "price": 35,
+      "image": "/items/bouquet-3.PNG",
+      "badge": "Новинка"
+    },
+    {
+      "id": 4,
+      "name": "Букет из 17-ти тюльпанов",
+      "price": 85,
+      "image": "/items/bouquet-4.PNG",
+      "badge": null
+    },
+    {
+      "id": 5,
+      "name": "Букет из 17-ти тюльпанов",
+      "price": 85,
+      "image": "/items/bouquet-5.PNG",
+      "badge": "Скидка"
+    },
+    {
+      "id": 6,
+      "name": "Букет из 17-ти тюльпанов",
+      "price": 85,
+      "image": "/items/bouquet-6.PNG",
+      "badge": null
+    },
+    {
+      "id": 7,
+      "name": "Букет из 17-ти тюльпанов",
+      "price": 85,
+      "image": "/items/bouquet-7.PNG",
+      "badge": "Премиум"
+    },
+    {
+      "id": 8,
+      "name": "Букет из 17-ти тюльпанов",
+      "price": 85,
+      "image": "/items/bouquet-8.PNG",
+      "badge": null
+    },
+    {
+      "id": 9,
+      "name": "Букет из 17-ти тюльпанов",
+      "price": 85,
+      "image": "/items/bouquet-9.PNG",
+      "badge": null
+    },
+    {
+      "id": 10,
+      "name": "Букет из 17-ти тюльпанов",
+      "price": 85,
+      "image": "/items/bouquet-10.PNG",
+      "badge": "Новинка"
+    },
+    {
+      "id": 11,
+      "name": "Букет из 15-ти тюльпанов",
+      "price": 70,
+      "image": "/items/bouquet-11.png",
+      "badge": null
+    },
+    {
+      "id": 12,
+      "name": "Букет из 15-ти тюльпанов",
+      "price": 70,
+      "image": "/items/bouquet-12.png",
+      "badge": "Премиум"
+    },
+    {
+      "id": 13,
+      "name": "Букет из 25-ти тюльпанов",
+      "price": 125,
+      "image": "/items/bouquet-13.jpg",
+      "badge": null
+    },
+    {
+      "id": 14,
+      "name": "Букет из 35-ти тюльпанов",
+      "price": 150,
+      "image": "/items/bouquet-14.jpg",
+      "badge": null
+    },
+    {
+      "id": 15,
+      "name": "Букет из розовых тюльпанов 25 штук",
+      "price": 110,
+      "image": "/items/bouquet-15.jpg",
+      "badge": null
+    },
+    {
+      "id": 16,
+      "name": "Букет нежность 25-ти тюльпанов",
+      "price": 125,
+      "image": "/items/bouquet-16.jpg",
+      "badge": null
+    },
+    {
+      "id": 17,
+      "name": "Букет из красных тюльпанов 11 штук",
+      "price": 55,
+      "image": "/items/bouquet-17.jpg",
+      "badge": null
+    },
+    {
+      "id": 18,
+      "name": "Букет весенний микс из 35-ти тюльпанов",
+      "price": 150,
+      "image": "/items/bouquet-18.jpg",
+      "badge": null
+    },
+    {
+      "id": 19,
+      "name": "Букет из жёлтых тюльпанов 13 штук",
+      "price": 70,
+      "image": "/items/bouquet-19.jpg",
+      "badge": null
+    },
+    {
+      "id": 20,
+      "name": "Букет из 29-ти тюльпанов",
+      "price": 130,
+      "image": "/items/bouquet-20.jpg",
+      "badge": null
+    },
+    {
+      "id": 21,
+      "name": "Букет из 15-ти тюльпанов",
+      "price": 70,
+      "image": "/items/bouquet-21.png",
+      "badge": null
+    },
+    {
+      "id": 22,
+      "name": "Букет из 15-ти тюльпанов",
+      "price": 70,
+      "image": "/items/bouquet-22.png",
+      "badge": null
+    },
+    {
+      "id": 28,
+      "name": "Букет из 15-ти тюльпанов",
+      "price": 70,
+      "image": "/items/bouquet-28.png",
+      "badge": null
+    }
+  ]
+}

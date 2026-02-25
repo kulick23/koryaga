@@ -2,6 +2,10 @@ const ITEM_IMAGE_PATH_PREFIX = "/items/"
 const OPTIMIZED_ITEM_IMAGE_PATH_PREFIX = "/items/optimized/"
 
 export const getOptimizedItemImagePath = (imagePath: string) => {
+  if (imagePath.startsWith(OPTIMIZED_ITEM_IMAGE_PATH_PREFIX)) {
+    return imagePath
+  }
+
   if (!imagePath.startsWith(ITEM_IMAGE_PATH_PREFIX)) {
     return imagePath
   }
@@ -17,4 +21,3 @@ export const getOptimizedItemImagePath = (imagePath: string) => {
 
   return `${OPTIMIZED_ITEM_IMAGE_PATH_PREFIX}${baseName}.jpg`
 }
-

@@ -1,0 +1,25 @@
+{
+  "products": [
+    {
+      "id": 29,
+      "name": "Композиция 1",
+      "price": "Договорная",
+      "image": "/items/bouquet-29.png",
+      "badge": null
+    },
+    {
+      "id": 30,
+      "name": "Композиция 2",
+      "price": "Договорная",
+      "image": "/items/bouquet-30.png",
+      "badge": null
+    },
+    {
+      "id": 31,
+      "name": "Композиция 3",
+      "price": "Договорная",
+      "image": "/items/bouquet-31.png",
+      "badge": null
+    }
+  ]
+}

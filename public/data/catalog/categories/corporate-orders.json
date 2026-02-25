@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": 39,
+      "name": "Кампанула",
+      "price": 70,
+      "image": "/items/bouquet-39.png",
+      "badge": null
+    },
+    {
+      "id": 40,
+      "name": "Лаванда в ящичке",
+      "price": 75,
+      "image": "/items/bouquet-40.png",
+      "badge": null
+    },
+    {
+      "id": 41,
+      "name": "Мускари в эко кашпо",
+      "price": 20,
+      "image": "/items/bouquet-41.JPG",
+      "badge": null
+    },
+    {
+      "id": 42,
+      "name": "Гортензия карликовая в эко кашпо",
+      "price": 65,
+      "image": "/items/bouquet-42.jpg",
+      "badge": null
+    },
+    {
+      "id": 43,
+      "name": "Гиацинты без полива",
+      "price": 20,
+      "image": "/items/bouquet-43.JPG",
+      "badge": null
+    },
+    {
+      "id": 44,
+      "name": "Кампанула с оформлением",
+      "price": 65,
+      "image": "/items/bouquet-44.JPG",
+      "badge": null
+    }
+  ]
+}
