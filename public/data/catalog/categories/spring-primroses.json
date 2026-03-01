@@ -118,6 +118,13 @@
       "price": 170,
       "image": "/items/optimized/bouquet-61.png",
       "badge": null
+    },
+    {
+      "id": 62,
+      "name": "Лаванда французская в ящичке",
+      "price": 80,
+      "image": "/items/optimized/bouquet-62.png",
+      "badge": null
     }
   ]
 }
