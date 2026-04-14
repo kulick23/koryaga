@@ -204,6 +204,34 @@ export function Catalog() {
                     {product.name}
                   </h3>
 
+                  {product.description && (
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                      {product.description}
+                    </p>
+                  )}
+
+                  {product.size && (
+                    <p className="mt-3 text-sm text-foreground/90">
+                      <span className="font-semibold">Размер:</span> {product.size}
+                    </p>
+                  )}
+
+                  {product.composition && product.composition.length > 0 && (
+                    <details className="mt-3 rounded-xl border border-border/80 bg-secondary/30 p-3 text-sm text-muted-foreground">
+                      <summary className="cursor-pointer list-none font-semibold text-foreground">
+                        Состав
+                      </summary>
+                      <ul className="mt-2 space-y-1.5">
+                        {product.composition.map((item) => (
+                          <li key={`${product.id}-${item}`} className="flex gap-2">
+                            <span className="text-primary">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+
                   <div className="mt-auto flex items-end justify-between gap-3 pt-4">
                     <span className="text-2xl font-bold leading-tight text-primary">
                       {formatPrice(product.price)}

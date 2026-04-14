@@ -11,6 +11,9 @@ export type Product = {
   price: number | string
   image?: string
   images?: string[]
+  description?: string
+  size?: string
+  composition?: string[]
   badge?: string | null
 }
 
