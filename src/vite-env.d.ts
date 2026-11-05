@@ -16,8 +16,11 @@ interface ImportMeta {
 
 interface TelegramWebApp {
   initData: string
+  isFullscreen?: boolean
   ready(): void
   expand(): void
+  requestFullscreen?(): void
+  disableVerticalSwipes?(): void
   close(): void
   setHeaderColor(color: string): void
   setBackgroundColor(color: string): void

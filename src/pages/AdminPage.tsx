@@ -65,6 +65,14 @@ export default function AdminPage() {
     const webApp = window.Telegram?.WebApp
     webApp?.ready()
     webApp?.expand()
+    webApp?.disableVerticalSwipes?.()
+    if (!webApp?.isFullscreen) {
+      try {
+        webApp?.requestFullscreen?.()
+      } catch {
+        // Older Telegram clients support expand(), but not fullscreen mode.
+      }
+    }
     webApp?.setHeaderColor("#0b0b0b")
     webApp?.setBackgroundColor("#0b0b0b")
     if (hasTelegramAuth) void load()
