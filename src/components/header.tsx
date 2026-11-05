@@ -7,6 +7,7 @@ import { NAV_LINKS, NAV_MENU_LABELS } from "@/constants/navigation"
 import { useAppDispatch, useAppSelector } from "@/hooks/store"
 import { sendOrderEmail } from "@/lib/emailjs"
 import { getOptimizedItemImagePath } from "@/lib/images"
+import { sendOrderTelegram } from "@/lib/telegram-orders"
 import { addToCart, clearCart, removeFromCart } from "@/store/slices/catalogSlice"
 
 const formatPrice = (price: number | string) =>
@@ -149,12 +150,25 @@ export function Header() {
                         .filter((line): line is { name: string; qty: number; price: string; lineTotal: string; imageUrl: string } => Boolean(line))
 
                       try {
-                        await sendOrderEmail({
+                        const orderPayload = {
                           customerName: orderName.trim(),
                           customerPhone: orderPhone.trim(),
                           comment: orderComment.trim(),
                           lines,
                           total: `${cartTotal.toLocaleString("ru-RU")} Br`,
+                        }
+                        const deliveries = await Promise.allSettled([
+                          sendOrderEmail(orderPayload),
+                          sendOrderTelegram(orderPayload),
+                        ])
+                        if (deliveries.every((delivery) => delivery.status === "rejected")) {
+                          const firstError = deliveries.find((delivery) => delivery.status === "rejected")
+                          throw firstError && firstError.status === "rejected"
+                            ? firstError.reason
+                            : new Error("Не удалось отправить заказ")
+                        }
+                        deliveries.forEach((delivery) => {
+                          if (delivery.status === "rejected") console.error("Partial order delivery failure", delivery.reason)
                         })
 
                         dispatch(clearCart())
