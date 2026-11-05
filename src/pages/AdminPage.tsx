@@ -3,6 +3,7 @@ import { ArrowLeft, ImagePlus, Loader2, Pencil, Plus, RefreshCw, Save, Trash2, X
 
 import { loadAdminCatalog, runAdminAction, uploadProductImage } from "@/admin/api"
 import type { AdminCategory, AdminProduct, ProductDraft } from "@/admin/types"
+import { resolveCatalogImage } from "@/lib/catalog-image"
 
 const emptyDraft = (categoryId: number): ProductDraft => ({
   category_id: categoryId,
@@ -131,12 +132,12 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0b0b0b] pb-24 text-white">
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#0b0b0b]/95 px-4 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
-          <div>
+    <main className="telegram-admin min-h-[100dvh] w-full max-w-full overflow-x-hidden bg-[#0b0b0b] text-white">
+      <header className="telegram-admin-header sticky top-0 z-30 w-full max-w-full border-b border-white/10 bg-[#0b0b0b]/95 py-3 backdrop-blur">
+        <div className="mx-auto flex w-full min-w-0 max-w-5xl items-center justify-between gap-3">
+          <div className="min-w-0">
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#d7ff00]">Telegram Mini App</p>
-            <h1 className="font-serif text-2xl font-bold">Каталог KORYAGA</h1>
+            <h1 className="truncate font-serif text-2xl font-bold">Каталог KORYAGA</h1>
           </div>
           <button type="button" onClick={() => void load()} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 hover:border-[#d7ff00] hover:text-[#d7ff00]" aria-label="Обновить каталог">
             <RefreshCw className="h-4 w-4" />
@@ -144,7 +145,7 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-5xl space-y-6 px-4 py-5">
+      <div className="telegram-admin-content mx-auto w-full min-w-0 max-w-5xl space-y-6 py-5">
         {error && <div role="alert" className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">{error}</div>}
 
         <section aria-labelledby="categories-title">
@@ -152,7 +153,7 @@ export default function AdminPage() {
             <h2 id="categories-title" className="text-sm font-semibold uppercase tracking-wider text-white/60">Категории</h2>
             <span className="text-xs text-white/35">{categories.length}</span>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="flex max-w-full gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {categories.map((category) => (
               <button key={category.id} type="button" onClick={() => { setSelectedCategoryId(category.id); setDraft(null) }} className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium ${selectedCategoryId === category.id ? "bg-[#d7ff00] text-black" : "bg-white/8 text-white/65"}`}>
                 {category.name}
@@ -168,7 +169,7 @@ export default function AdminPage() {
         </section>
 
         {selectedCategory && (
-          <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+          <section className="min-w-0 max-w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4">
             <p className="mb-3 text-xs uppercase tracking-wider text-white/40">Настройки категории</p>
             <div className="flex flex-col gap-2 sm:flex-row">
               <input value={categoryName} onChange={(event) => setCategoryName(event.target.value)} className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none focus:border-[#d7ff00]" />
@@ -180,8 +181,8 @@ export default function AdminPage() {
         )}
 
         <section aria-labelledby="products-title">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
               <h2 id="products-title" className="text-lg font-semibold">Товары</h2>
               <p className="text-xs text-white/40">{visibleProducts.length} в выбранной категории</p>
             </div>
@@ -193,19 +194,19 @@ export default function AdminPage() {
           ) : visibleProducts.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-white/15 px-5 py-12 text-center text-sm text-white/45">В этой категории пока нет товаров</div>
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
               {visibleProducts.map((product) => (
-                <article key={product.id} className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3">
+                <article key={product.id} className="flex w-full min-w-0 max-w-full gap-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-3">
                   <div className="h-24 w-20 shrink-0 overflow-hidden rounded-xl bg-white/5">
-                    {product.image_url ? <img src={product.image_url} alt="" className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center text-white/20"><ImagePlus className="h-5 w-5" /></div>}
+                    {product.image_url ? <img src={resolveCatalogImage(product.image_url)} alt={product.name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center text-white/20"><ImagePlus className="h-5 w-5" /></div>}
                   </div>
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 flex-1 overflow-hidden">
                     <div className="flex items-start justify-between gap-2">
-                      <div><h3 className="truncate font-semibold">{product.name}</h3><p className="mt-1 text-sm font-semibold text-[#d7ff00]">{formatPrice(product)}</p></div>
+                      <div className="min-w-0"><h3 className="line-clamp-2 break-words font-semibold leading-tight">{product.name}</h3><p className="mt-1 text-sm font-semibold text-[#d7ff00]">{formatPrice(product)}</p></div>
                       {!product.is_active && <span className="rounded-full bg-white/10 px-2 py-1 text-[10px] text-white/50">Скрыт</span>}
                     </div>
                     <div className="mt-4 flex gap-2">
-                      <button type="button" onClick={() => setDraft({ ...product })} className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-white/10 px-3 py-2 text-xs font-medium"><Pencil className="h-3.5 w-3.5" />Изменить</button>
+                      <button type="button" onClick={() => setDraft({ ...product })} className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg bg-white/10 px-2 py-2 text-xs font-medium"><Pencil className="h-3.5 w-3.5 shrink-0" /><span className="truncate">Изменить</span></button>
                       <button type="button" onClick={() => { if (confirm(`Удалить «${product.name}»?`)) void mutate("product.delete", { id: product.id }) }} className="flex h-8 w-8 items-center justify-center rounded-lg text-red-300 hover:bg-red-500/10" aria-label={`Удалить ${product.name}`}><Trash2 className="h-4 w-4" /></button>
                     </div>
                   </div>
@@ -217,8 +218,8 @@ export default function AdminPage() {
       </div>
 
       {draft && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 p-3 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="product-editor-title">
-          <form onSubmit={saveProduct} className="mx-auto my-3 max-w-xl rounded-2xl border border-white/10 bg-[#131313] p-4 shadow-2xl sm:p-6">
+        <div className="telegram-admin-modal fixed inset-0 z-50 w-full max-w-full overflow-x-hidden overflow-y-auto bg-black/80 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="product-editor-title">
+          <form onSubmit={saveProduct} className="mx-auto my-3 w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-[#131313] p-4 shadow-2xl sm:p-6">
             <div className="mb-5 flex items-center justify-between">
               <button type="button" onClick={() => setDraft(null)} className="inline-flex items-center gap-2 text-sm text-white/55"><ArrowLeft className="h-4 w-4" />Назад</button>
               <h2 id="product-editor-title" className="font-semibold">{draft.id ? "Редактирование" : "Новый товар"}</h2>
@@ -229,14 +230,14 @@ export default function AdminPage() {
               <label className="block text-sm"><span className="mb-2 block text-white/60">Категория</span><select value={draft.category_id} onChange={(event) => setDraft({ ...draft, category_id: Number(event.target.value) })} className="w-full rounded-xl border border-white/10 bg-[#1d1d1d] px-4 py-3 outline-none focus:border-[#d7ff00]">{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select></label>
               <label className="block text-sm"><span className="mb-2 block text-white/60">Название *</span><input required value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })} className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
                 <label className="block text-sm"><span className="mb-2 block text-white/60">Цена, Br</span><input type="number" min="0" step="0.01" value={draft.price_value ?? ""} onChange={(event) => setDraft({ ...draft, price_value: event.target.value ? Number(event.target.value) : null })} className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
                 <label className="block text-sm"><span className="mb-2 block text-white/60">Цена текстом</span><input value={draft.price_label ?? ""} onChange={(event) => setDraft({ ...draft, price_label: event.target.value || null })} placeholder="от 300 Br" className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
               </div>
 
               <label className="block text-sm"><span className="mb-2 block text-white/60">Описание</span><textarea rows={4} value={draft.description ?? ""} onChange={(event) => setDraft({ ...draft, description: event.target.value || null })} className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
                 <label className="block text-sm"><span className="mb-2 block text-white/60">Плашка</span><input value={draft.badge ?? ""} onChange={(event) => setDraft({ ...draft, badge: event.target.value || null })} placeholder="Хит / Новинка" className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
                 <label className="block text-sm"><span className="mb-2 block text-white/60">Размер</span><input value={draft.size ?? ""} onChange={(event) => setDraft({ ...draft, size: event.target.value || null })} className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
               </div>
@@ -245,7 +246,7 @@ export default function AdminPage() {
 
               <div>
                 <span className="mb-2 block text-sm text-white/60">Изображение</span>
-                {draft.image_url && <img src={draft.image_url} alt="Превью товара" className="mb-3 h-44 w-full rounded-xl object-cover" />}
+                {draft.image_url && <img src={resolveCatalogImage(draft.image_url)} alt="Превью товара" className="mb-3 h-44 w-full rounded-xl object-cover" />}
                 <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 px-4 py-4 text-sm text-white/65 hover:border-[#d7ff00] hover:text-[#d7ff00]">
                   {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImagePlus className="h-4 w-4" />}
                   {uploading ? "Загрузка..." : "Выбрать фотографию"}

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
 import { CATALOG_ALL_CATEGORY } from "@/constants/catalog"
+import { resolveCatalogImage } from "@/lib/catalog-image"
 import { isSupabaseConfigured, supabase } from "@/lib/supabase"
 
 export type CatalogCategory = string
@@ -80,8 +81,8 @@ const fetchSupabaseCatalog = async (): Promise<CatalogPayload | null> => {
       name: product.name,
       category: relation?.name ?? categoryNames[0],
       price: product.price_label || product.price_value || 0,
-      image: product.image_url || undefined,
-      images: product.images ?? undefined,
+      image: resolveCatalogImage(product.image_url),
+      images: product.images?.map(resolveCatalogImage).filter((url): url is string => Boolean(url)),
       description: product.description ?? undefined,
       size: product.size ?? undefined,
       composition: product.composition ?? undefined,
@@ -133,6 +134,8 @@ const fetchJsonCatalog = async (): Promise<CatalogPayload> => {
 
     return {
       ...product,
+      image: resolveCatalogImage(product.image),
+      images: product.images?.map(resolveCatalogImage).filter((url): url is string => Boolean(url)),
       category:
         parsedIndex !== null
           ? categories[parsedIndex] ?? safeFallbackCategory

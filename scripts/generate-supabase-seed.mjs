@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -9,6 +9,18 @@ const quote = (value) => `'${String(value).replaceAll("'", "''")}'`
 const nullable = (value) => (value === undefined || value === null || value === "" ? "null" : quote(value))
 const array = (values) =>
   Array.isArray(values) && values.length > 0 ? `array[${values.map(quote).join(", ")}]::text[]` : "'{}'::text[]"
+const resolveImage = (value) => {
+  if (!value) return value
+  const match = value.match(/^\/items\/(?:optimized\/)?bouquet-(\d+)\.[a-z0-9]+$/i)
+  if (!match) return value
+
+  for (const extension of ["jpg", "png"]) {
+    const candidate = `/items/optimized/bouquet-${match[1]}.${extension}`
+    if (existsSync(resolve(root, "public", candidate.replace(/^\//, "")))) return candidate
+  }
+
+  return value
+}
 
 const lines = [
   "begin;",
@@ -32,7 +44,8 @@ for (const category of categories) {
   for (const product of payload.products ?? []) {
     const numericPrice = typeof product.price === "number" ? product.price : null
     const priceLabel = typeof product.price === "string" ? product.price : null
-    const images = product.images?.length ? product.images : product.image ? [product.image] : []
+    const images = (product.images?.length ? product.images : product.image ? [product.image] : []).map(resolveImage)
+    const image = resolveImage(product.image ?? images[0])
     lines.push(`insert into public.products (
   id, category_id, name, description, price_value, price_label, image_url, images, size, composition, badge, sort_order, is_active
 ) values (
@@ -42,7 +55,7 @@ for (const category of categories) {
   ${nullable(product.description)},
   ${numericPrice ?? "null"},
   ${nullable(priceLabel)},
-  ${nullable(product.image ?? images[0])},
+  ${nullable(image)},
   ${array(images)},
   ${nullable(product.size)},
   ${array(product.composition)},

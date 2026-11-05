@@ -63,6 +63,23 @@ html {
   scroll-behavior: smooth;
 }
 
+.telegram-admin {
+  padding-bottom: calc(6rem + var(--tg-safe-area-inset-bottom, 0px));
+}
+
+.telegram-admin-header,
+.telegram-admin-content {
+  padding-left: max(1rem, var(--tg-content-safe-area-inset-left, 0px));
+  padding-right: max(1rem, var(--tg-content-safe-area-inset-right, 0px));
+}
+
+.telegram-admin-modal {
+  padding-top: max(0.75rem, var(--tg-content-safe-area-inset-top, 0px));
+  padding-right: max(0.75rem, var(--tg-content-safe-area-inset-right, 0px));
+  padding-bottom: max(0.75rem, var(--tg-content-safe-area-inset-bottom, 0px));
+  padding-left: max(0.75rem, var(--tg-content-safe-area-inset-left, 0px));
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
