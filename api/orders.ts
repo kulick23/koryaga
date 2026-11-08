@@ -8,8 +8,11 @@ export default async function handler(request: any, response: any) {
   if (request.method !== "POST") return response.status(405).json({ ok: false, error: "Method not allowed" })
 
   const token = process.env.TELEGRAM_BOT_TOKEN
-  const chatId = process.env.TELEGRAM_ORDER_CHAT_ID
-  if (!token || !chatId) return response.status(503).json({ ok: false, error: "Telegram is not configured" })
+  const chatIds = [...new Set([
+    ...(process.env.TELEGRAM_ADMIN_IDS ?? "").split(","),
+    process.env.TELEGRAM_ORDER_CHAT_ID ?? "",
+  ].map((id) => id.trim()).filter((id) => /^-?\d+$/.test(id)))]
+  if (!token || chatIds.length === 0) return response.status(503).json({ ok: false, error: "Telegram is not configured" })
 
   const { customerName, customerPhone, comment, lines, total, website } = request.body ?? {}
   if (website) return response.status(200).json({ ok: true })
@@ -33,14 +36,19 @@ export default async function handler(request: any, response: any) {
     `<b>Итого:</b> ${escapeHtml(total)}`,
   ].join("\n")
 
-  const telegramResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: "HTML" }),
-  })
-  const result = await telegramResponse.json()
-  if (!telegramResponse.ok || !result.ok) {
-    console.error("Telegram order error", result)
+  const deliveries = await Promise.allSettled(chatIds.map(async (chatId) => {
+    const telegramResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: "HTML" }),
+      signal: AbortSignal.timeout(10000),
+    })
+    const result = await telegramResponse.json()
+    if (!telegramResponse.ok || !result.ok) throw new Error(`Telegram rejected delivery: ${result.error_code ?? telegramResponse.status}`)
+  }))
+  const delivered = deliveries.filter((result) => result.status === "fulfilled").length
+  if (delivered < chatIds.length) console.error("Telegram order delivery failures", { failed: chatIds.length - delivered, total: chatIds.length })
+  if (delivered === 0) {
     return response.status(502).json({ ok: false, error: "Telegram delivery failed" })
   }
 

@@ -109,7 +109,7 @@ export const ru = {
     },
     info: {
       phoneLabel: "Телефон",
-      phoneValue: "+375 (25) 939-85-15",
+      phoneValue: "+375 (29) 653-94-17",
       instagramLabel: "Instagram",
       instagramValue: "@koryaga.by",
       hoursLabel: "Часы работы",
