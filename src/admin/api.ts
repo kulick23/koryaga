@@ -1,6 +1,6 @@
 import type { AdminCategory, AdminProduct } from "@/admin/types"
 
-const getAuthHeaders = () => {
+const getAuthHeaders = (): Record<string, string> => {
   const initData = window.Telegram?.WebApp.initData
   const devKey = import.meta.env.VITE_ADMIN_DEV_KEY
   return initData

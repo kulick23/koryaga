@@ -15,6 +15,7 @@ export type Product = {
   images?: string[]
   description?: string
   size?: string
+  sizeVariants?: { id: string; name: string; price: number }[]
   composition?: string[]
   badge?: string | null
 }
@@ -24,7 +25,7 @@ type CatalogState = {
   products: Product[]
   activeCategory: CatalogCategory
   likedIds: number[]
-  cart: Record<number, number>
+  cart: Record<string, number>
   status: "idle" | "loading" | "succeeded" | "failed"
   error: string | null
 }
@@ -61,7 +62,7 @@ const fetchSupabaseCatalog = async (): Promise<CatalogPayload | null> => {
     supabase
       .from("products")
       .select(
-        "id,name,description,price_value,price_label,image_url,images,size,composition,badge,categories(name)"
+        "*,categories(name)"
       )
       .eq("is_active", true)
       .order("sort_order"),
@@ -82,9 +83,10 @@ const fetchSupabaseCatalog = async (): Promise<CatalogPayload | null> => {
       category: relation?.name ?? categoryNames[0],
       price: product.price_label || product.price_value || 0,
       image: resolveCatalogImage(product.image_url),
-      images: product.images?.map(resolveCatalogImage).filter((url): url is string => Boolean(url)),
+      images: (product.images as string[] | null)?.map(resolveCatalogImage).filter((url): url is string => Boolean(url)),
       description: product.description ?? undefined,
       size: product.size ?? undefined,
+      sizeVariants: product.size_variants ?? [],
       composition: product.composition ?? undefined,
       badge: product.badge,
     }
@@ -139,7 +141,7 @@ const fetchJsonCatalog = async (): Promise<CatalogPayload> => {
       category:
         parsedIndex !== null
           ? categories[parsedIndex] ?? safeFallbackCategory
-          : rawCategory || safeFallbackCategory,
+          : String(rawCategory || safeFallbackCategory),
     }
   })
 
@@ -175,11 +177,11 @@ const catalogSlice = createSlice({
       }
       state.likedIds.push(id)
     },
-    addToCart(state, action: PayloadAction<number>) {
+    addToCart(state, action: PayloadAction<number | string>) {
       const id = action.payload
       state.cart[id] = (state.cart[id] ?? 0) + 1
     },
-    removeFromCart(state, action: PayloadAction<number>) {
+    removeFromCart(state, action: PayloadAction<number | string>) {
       const id = action.payload
       if (!state.cart[id]) return
       state.cart[id] -= 1

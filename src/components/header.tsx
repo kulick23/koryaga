@@ -45,9 +45,14 @@ export function Header() {
     const map = new Map(products.map((p) => [p.id, p]))
     return Object.entries(cart)
       .map(([id, qty]) => {
-        const product = map.get(Number(id))
-        if (!product) return null
-        return { product, qty }
+        const [productId, variantId] = id.split(":")
+        const original = map.get(Number(productId))
+        if (!original) return null
+        const variant = original.sizeVariants?.find((item) => item.id === variantId)
+        if (original.sizeVariants?.length && !variant) return null
+        if (variantId && !variant) return null
+        const product = variant ? { ...original, name: `${original.name} — ${variant.name}`, price: variant.price } : original
+        return { product, qty, cartKey: id }
       })
       .filter(Boolean)
   }, [cart, products])
@@ -267,10 +272,10 @@ export function Header() {
                     <div className="mt-4 flex max-h-64 flex-col gap-3 overflow-auto pr-1">
                       {cartItems.map((item) => {
                         if (!item) return null
-                        const { product, qty } = item
+                        const { product, qty, cartKey } = item
                         return (
                           <div
-                            key={product.id}
+                            key={cartKey}
                             className="flex items-center gap-3 rounded-xl border border-border/60 bg-background/40 p-3"
                           >
                             <div className="h-12 w-12 overflow-hidden rounded-lg bg-secondary">
@@ -297,7 +302,7 @@ export function Header() {
                                 <button
                                   type="button"
                                   className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
-                                  onClick={() => dispatch(removeFromCart(product.id))}
+                                  onClick={() => dispatch(removeFromCart(cartKey))}
                                   aria-label={CART_LABELS.decreaseAria}
                                 >
                                   <Minus className="h-3.5 w-3.5" />
@@ -308,7 +313,7 @@ export function Header() {
                                 <button
                                   type="button"
                                   className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-foreground hover:bg-primary hover:text-primary-foreground"
-                                  onClick={() => dispatch(addToCart(product.id))}
+                                  onClick={() => dispatch(addToCart(cartKey))}
                                   aria-label={CART_LABELS.increaseAria}
                                 >
                                   <Plus className="h-3.5 w-3.5" />

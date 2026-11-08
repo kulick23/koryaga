@@ -17,6 +17,7 @@ create table if not exists public.products (
   image_url text,
   images text[] not null default '{}',
   size text,
+  size_variants jsonb not null default '[]'::jsonb check (jsonb_typeof(size_variants) = 'array'),
   composition text[] not null default '{}',
   badge text,
   sort_order integer not null default 0,

@@ -27,6 +27,7 @@ export function Catalog() {
   const dispatch = useAppDispatch()
   const { categories, products, activeCategory } = useAppSelector((state) => state.catalog)
   const [page, setPage] = useState(1)
+  const [selectedSizes, setSelectedSizes] = useState<Record<number, string>>({})
   const [activeSlides, setActiveSlides] = useState<Record<number, number>>({})
 
   const filteredProducts = useMemo(() => {
@@ -90,6 +91,8 @@ export function Catalog() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {pagedProducts.map((product, productIndex) => {
+            const variants = product.sizeVariants ?? []
+            const selectedSize = variants.find((variant) => variant.id === selectedSizes[product.id]) ?? variants[0]
             const images = getProductImages(product)
             const currentSlide = getWrappedIndex(activeSlides[product.id] ?? 0, images.length)
             const hasMultipleImages = images.length > 1
@@ -232,13 +235,18 @@ export function Catalog() {
                     </details>
                   )}
 
-                  <div className="mt-auto flex items-end justify-between gap-3 pt-4">
+                  {variants.length > 0 && <label className="mt-4 block text-sm text-muted-foreground">Размер
+                    <select aria-label={`Размер: ${product.name}`} value={selectedSize?.id} onChange={(event) => setSelectedSizes((current) => ({ ...current, [product.id]: event.target.value }))} className="mt-2 w-full rounded-xl border border-border bg-secondary p-3 text-base text-foreground">
+                      {variants.map((variant) => <option key={variant.id} value={variant.id}>{variant.name} — {formatPrice(variant.price)}</option>)}
+                    </select>
+                  </label>}
+                  <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-4">
                     <span className="text-2xl font-bold leading-tight text-primary">
-                      {formatPrice(product.price)}
+                      {formatPrice(selectedSize?.price ?? product.price)}
                     </span>
                     <button
                       type="button"
-                      onClick={() => dispatch(addToCart(product.id))}
+                      onClick={() => dispatch(addToCart(selectedSize ? `${product.id}:${selectedSize.id}` : product.id))}
                       className="flex h-11 shrink-0 whitespace-nowrap items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(200,255,0,0.3)]"
                     >
                       <ShoppingBag className="h-4 w-4" />

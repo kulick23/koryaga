@@ -12,6 +12,7 @@ const cleanProduct = (payload: Record<string, unknown>) => ({
   image_url: String(payload.image_url ?? "").trim().slice(0, 1000) || null,
   images: Array.isArray(payload.images) ? payload.images.map(String).slice(0, 12) : [],
   size: String(payload.size ?? "").trim().slice(0, 200) || null,
+  size_variants: Array.isArray(payload.size_variants) ? payload.size_variants.map((variant: any) => ({ id: String(variant.id ?? ""), name: String(variant.name ?? "").trim().slice(0, 80), price: Number(variant.price) })) : [],
   composition: Array.isArray(payload.composition) ? payload.composition.map(String).filter(Boolean).slice(0, 30) : [],
   badge: String(payload.badge ?? "").trim().slice(0, 80) || null,
   is_active: payload.is_active !== false,
@@ -74,6 +75,7 @@ export default async function handler(request: any, response: any) {
 
     if (action === "product.create" || action === "product.update") {
       const product = cleanProduct(payload)
+      if (product.size_variants.length > 30 || product.size_variants.some((variant) => !variant.id || !variant.name || !Number.isFinite(variant.price) || variant.price < 0 || variant.price > 9999999999) || new Set(product.size_variants.map((variant) => variant.id)).size !== product.size_variants.length) return sendError(response, 400, "Укажите уникальные размеры и корректные цены")
       if (!product.name || !product.category_id) return sendError(response, 400, "Заполните название и категорию")
       const query = action === "product.create"
         ? supabase.from("products").insert(product)

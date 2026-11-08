@@ -15,6 +15,7 @@ export type AdminProduct = {
   image_url: string | null
   images: string[]
   size: string | null
+  size_variants: { id: string; name: string; price: number }[]
   composition: string[]
   badge: string | null
   is_active: boolean

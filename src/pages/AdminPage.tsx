@@ -14,6 +14,7 @@ const emptyDraft = (categoryId: number): ProductDraft => ({
   image_url: null,
   images: [],
   size: null,
+  size_variants: [],
   composition: [],
   badge: null,
   is_active: true,
@@ -244,6 +245,21 @@ export default function AdminPage() {
               </div>
 
               <label className="block text-sm"><span className="mb-2 block text-white/60">Описание</span><textarea rows={4} value={draft.description ?? ""} onChange={(event) => setDraft({ ...draft, description: event.target.value || null })} className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
+
+              <fieldset className="min-w-0 rounded-xl border border-white/10 p-3">
+                <label className="flex items-center justify-between gap-3 text-sm">
+                  <span>Разные размеры и цены</span>
+                  <input type="checkbox" checked={Boolean(draft.size_variants?.length)} onChange={(event) => setDraft({ ...draft, size_variants: event.target.checked ? [{ id: crypto.randomUUID(), name: "", price: 0 }] : [] })} className="h-5 w-5 accent-[#d7ff00]" />
+                </label>
+                {(draft.size_variants ?? []).map((variant, index) => (
+                  <div key={variant.id} className="mt-3 grid min-w-0 grid-cols-[minmax(0,1fr)_90px_36px] gap-2">
+                    <input aria-label={`Название размера ${index + 1}`} required maxLength={80} placeholder="S / Большой" value={variant.name} onChange={(event) => setDraft({ ...draft, size_variants: draft.size_variants.map((item) => item.id === variant.id ? { ...item, name: event.target.value } : item) })} className="min-w-0 rounded-lg border border-white/10 bg-white/5 p-2 text-base" />
+                    <input aria-label={`Цена размера ${index + 1}, Br`} required type="number" min="0" step="0.01" value={variant.price} onChange={(event) => setDraft({ ...draft, size_variants: draft.size_variants.map((item) => item.id === variant.id ? { ...item, price: Number(event.target.value) } : item) })} className="min-w-0 rounded-lg border border-white/10 bg-white/5 p-2 text-base" />
+                    <button type="button" aria-label="Удалить размер" onClick={() => setDraft({ ...draft, size_variants: draft.size_variants.filter((item) => item.id !== variant.id) })}><Trash2 className="h-4 w-4 text-red-300" /></button>
+                  </div>
+                ))}
+                {Boolean(draft.size_variants?.length) && <button type="button" onClick={() => setDraft({ ...draft, size_variants: [...draft.size_variants, { id: crypto.randomUUID(), name: "", price: 0 }] })} className="mt-3 text-sm text-[#d7ff00]">+ Добавить размер</button>}
+              </fieldset>
 
               <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
                 <label className="block text-sm"><span className="mb-2 block text-white/60">Плашка</span><input value={draft.badge ?? ""} onChange={(event) => setDraft({ ...draft, badge: event.target.value || null })} placeholder="Хит / Новинка" className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-[#d7ff00]" /></label>
