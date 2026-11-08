@@ -1,5 +1,5 @@
 import { type FormEvent, useEffect, useMemo, useState } from "react"
-import { ArrowLeft, ImagePlus, Loader2, Pencil, Plus, RefreshCw, Save, Trash2, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, ImagePlus, Loader2, Pencil, Plus, RefreshCw, Save, Trash2, X } from "lucide-react"
 
 import { loadAdminCatalog, runAdminAction, uploadProductImage } from "@/admin/api"
 import type { AdminCategory, AdminProduct, ProductDraft } from "@/admin/types"
@@ -105,6 +105,16 @@ export default function AdminPage() {
     if (await mutate("category.create", { name: newCategoryName })) setNewCategoryName("")
   }
 
+  const moveCategory = async (direction: -1 | 1) => {
+    if (saving || loading) return
+    const index = categories.findIndex((category) => category.id === selectedCategoryId)
+    const target = index + direction
+    if (index < 0 || target < 0 || target >= categories.length) return
+    const ids = categories.map((category) => category.id)
+    ;[ids[index], ids[target]] = [ids[target], ids[index]]
+    await mutate("category.reorder", { ids })
+  }
+
   const saveProduct = async (event: FormEvent) => {
     event.preventDefault()
     if (!draft) return
@@ -180,6 +190,14 @@ export default function AdminPage() {
         {selectedCategory && (
           <section className="min-w-0 max-w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4">
             <p className="mb-3 text-xs uppercase tracking-wider text-white/40">Настройки категории</p>
+            <div className="mb-4 rounded-xl border border-white/10 p-3">
+              <p className="mb-3 text-sm text-white/60" aria-live="polite">Позиция на сайте: {categories.findIndex((category) => category.id === selectedCategoryId) + 1} из {categories.length}</p>
+              <div className="grid grid-cols-2 gap-2">
+                <button type="button" disabled={saving || loading || categories[0]?.id === selectedCategoryId} onClick={() => void moveCategory(-1)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white/10 px-3 text-sm disabled:opacity-30"><ArrowLeft className="h-4 w-4" />Влево</button>
+                <button type="button" disabled={saving || loading || categories[categories.length - 1]?.id === selectedCategoryId} onClick={() => void moveCategory(1)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-white/10 px-3 text-sm disabled:opacity-30">Вправо<ArrowRight className="h-4 w-4" /></button>
+              </div>
+              <p className="mt-2 text-xs text-white/40">Порядок сохраняется автоматически после нажатия.</p>
+            </div>
             <div className="flex flex-col gap-2 sm:flex-row">
               <input value={categoryName} onChange={(event) => setCategoryName(event.target.value)} className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm outline-none focus:border-[#d7ff00]" />
               <button type="button" disabled={saving || !categoryName.trim()} onClick={() => void mutate("category.update", { ...selectedCategory, name: categoryName })} className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-black disabled:opacity-40"><Save className="h-4 w-4" />Сохранить</button>

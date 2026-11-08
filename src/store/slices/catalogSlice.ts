@@ -58,7 +58,7 @@ const fetchSupabaseCatalog = async (): Promise<CatalogPayload | null> => {
   if (!isSupabaseConfigured || !supabase) return null
 
   const [categoriesResult, productsResult] = await Promise.all([
-    supabase.from("categories").select("id,name").eq("is_active", true).order("sort_order"),
+    supabase.from("categories").select("id,name").eq("is_active", true).order("sort_order").order("id"),
     supabase
       .from("products")
       .select(

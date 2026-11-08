@@ -36,7 +36,7 @@ export default async function handler(request: any, response: any) {
 
     if (request.method === "GET") {
       const [categories, products] = await Promise.all([
-        supabase.from("categories").select("*").order("sort_order"),
+        supabase.from("categories").select("*").order("sort_order").order("id"),
         supabase.from("products").select("*").order("sort_order"),
       ])
       if (categories.error || products.error) throw categories.error ?? products.error
@@ -49,9 +49,27 @@ export default async function handler(request: any, response: any) {
     if (action === "category.create") {
       const name = String(payload.name ?? "").trim().slice(0, 120)
       if (!name) return sendError(response, 400, "Укажите название категории")
-      const result = await supabase.from("categories").insert({ name, sort_order: Number(payload.sort_order) || 0 }).select().single()
+      const last = await supabase.from("categories").select("sort_order").order("sort_order", { ascending: false }).limit(1)
+      if (last.error) throw last.error
+      const result = await supabase.from("categories").insert({ name, sort_order: (last.data[0]?.sort_order ?? -1) + 1 }).select().single()
       if (result.error) throw result.error
       return response.status(200).json({ ok: true, item: result.data })
+    }
+
+    if (action === "category.reorder") {
+      const ids = payload.ids
+      if (!Array.isArray(ids) || ids.some((id: unknown) => !Number.isSafeInteger(id) || Number(id) <= 0) || new Set(ids).size !== ids.length) {
+        return sendError(response, 400, "Некорректный порядок категорий")
+      }
+      const current = await supabase.from("categories").select("id,name,is_active")
+      if (current.error) throw current.error
+      const byId = new Map(current.data.map((category) => [category.id, category]))
+      if (ids.length !== current.data.length || ids.some((id: number) => !byId.has(id))) {
+        return sendError(response, 409, "Список категорий изменился. Обновите каталог и повторите")
+      }
+      const result = await supabase.from("categories").upsert(ids.map((id: number, sort_order: number) => ({ ...byId.get(id)!, sort_order })), { onConflict: "id" })
+      if (result.error) throw result.error
+      return response.status(200).json({ ok: true })
     }
 
     if (action === "category.update") {
